@@ -1,10 +1,16 @@
 import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { Button } from '@/components/ui/button'
+import { auth } from '@/lib/auth'
 import { LogOutIcon } from 'lucide-react'
+import { headers } from 'next/headers'
 import Link from 'next/link'
 
-export function Header() {
-  const isAuthenticated = false
+export async function Header() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+
+  const isAuthenticated = !!session
 
   return (
     <header className='border-b'>
