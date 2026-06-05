@@ -17,8 +17,13 @@ import {
 } from '@/features/auth/schemas/auth-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
+import { authClient } from '@/lib/auth/auth-client'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 export function LoginForm() {
+  const router = useRouter()
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -29,8 +34,22 @@ export function LoginForm() {
 
   const { isSubmitting } = form.formState
 
-  function onSubmit(data: LoginSchema) {
-    console.log(data)
+  async function onSubmit(values: LoginSchema) {
+    await authClient.signIn.email(
+      {
+        ...values,
+        callbackURL: '/dashboard',
+      },
+      {
+        onSuccess: () => {
+          toast.success('Login successful')
+          router.push('/dashboard')
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message)
+        },
+      },
+    )
   }
 
   return (
