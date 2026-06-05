@@ -113,10 +113,10 @@ export function SignUpForm() {
         <Field>
           <Button type='submit' disabled={isSubmitting}>
             {isSubmitting && <Loader2Icon className='size-4 animate-spin' />}
-            <span>Login</span>
+            <span>Sign Up</span>
           </Button>
           <FieldDescription className='text-center'>
-            Don&apos;t have an account? <Link href='/sign-up'>Sign up</Link>
+            Already have an account? <Link href='/login'>Login</Link>
           </FieldDescription>
         </Field>
       </FieldGroup>
