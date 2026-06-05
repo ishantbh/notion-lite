@@ -31,10 +31,6 @@ export async function Header() {
                   </li>
 
                   <li>
-                    <ThemeToggle />
-                  </li>
-
-                  <li>
                     <Button variant='destructive' size='icon'>
                       <LogOutIcon className='size-4' />
                       <span className='sr-only'>Logout</span>
@@ -56,6 +52,10 @@ export async function Header() {
                   </li>
                 </>
               )}
+
+              <li>
+                <ThemeToggle />
+              </li>
             </ul>
           </nav>
         </div>
