@@ -1,16 +1,13 @@
+'use client'
+
+import { LogoutButton } from '@/components/logout-button'
 import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { Button } from '@/components/ui/button'
-import { auth } from '@/lib/auth'
-import { LogOutIcon } from 'lucide-react'
-import { headers } from 'next/headers'
+import { authClient } from '@/lib/auth/auth-client'
 import Link from 'next/link'
 
-export async function Header() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
-
-  const isAuthenticated = !!session
+export function Header() {
+  const { data: session, isPending } = authClient.useSession()
 
   return (
     <header className='border-b'>
@@ -22,36 +19,34 @@ export async function Header() {
 
           <nav>
             <ul className='flex items-center gap-2'>
-              {isAuthenticated ? (
-                <>
-                  <li>
-                    <Button variant='link' asChild>
-                      <Link href='/dashboard'>Dashboard</Link>
-                    </Button>
-                  </li>
+              {!isPending &&
+                (session ? (
+                  <>
+                    <li>
+                      <Button variant='link' asChild>
+                        <Link href='/dashboard'>Dashboard</Link>
+                      </Button>
+                    </li>
 
-                  <li>
-                    <Button variant='destructive' size='icon'>
-                      <LogOutIcon className='size-4' />
-                      <span className='sr-only'>Logout</span>
-                    </Button>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Button asChild>
-                      <Link href='/login'>Login</Link>
-                    </Button>
-                  </li>
+                    <li>
+                      <LogoutButton />
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Button asChild>
+                        <Link href='/login'>Login</Link>
+                      </Button>
+                    </li>
 
-                  <li className='hidden sm:block'>
-                    <Button variant='secondary' asChild>
-                      <Link href='/sign-up'>Sign Up</Link>
-                    </Button>
-                  </li>
-                </>
-              )}
+                    <li className='hidden sm:block'>
+                      <Button variant='secondary' asChild>
+                        <Link href='/sign-up'>Sign Up</Link>
+                      </Button>
+                    </li>
+                  </>
+                ))}
 
               <li>
                 <ThemeToggle />
