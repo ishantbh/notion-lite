@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { CreateNoteDialog } from '@/features/notes/components/create-note-dialog'
 import { PlusIcon } from 'lucide-react'
 
 export function DashboardHeader() {
@@ -11,10 +12,7 @@ export function DashboardHeader() {
         </p>
       </div>
 
-      <Button>
-        <PlusIcon />
-        <span>New Note</span>
-      </Button>
+      <CreateNoteDialog />
     </div>
   )
 }

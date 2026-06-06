@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { CreateNoteDialog } from '@/features/notes/components/create-note-dialog'
 import { FolderOpenIcon, PlusIcon } from 'lucide-react'
 
 export function EmptyNotesList() {
@@ -10,10 +11,7 @@ export function EmptyNotesList() {
         Create your first note
       </h2>
 
-      <Button variant='outline' size='lg'>
-        <PlusIcon />
-        <span>New Note</span>
-      </Button>
+      <CreateNoteDialog variant='outline' size='lg' />
     </div>
   )
 }
