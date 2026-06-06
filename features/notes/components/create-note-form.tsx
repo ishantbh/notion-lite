@@ -13,9 +13,11 @@ import {
   type CreateNoteSchema,
   createNoteSchema,
 } from '@/features/notes/schemas/create-note-schema'
+import { createNote } from '@/features/notes/server/create-note'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 type Props = {
   close: () => void
@@ -32,8 +34,15 @@ export function CreateNoteForm({ close }: Props) {
 
   const { isSubmitting } = form.formState
 
-  function onSubmit(data: CreateNoteSchema) {
-    console.log(data)
+  async function onSubmit(data: CreateNoteSchema) {
+    const res = await createNote(data)
+
+    if (res?.error) {
+      toast.error(res.error)
+      return
+    }
+
+    toast.success('Note created successfully')
 
     close()
   }
