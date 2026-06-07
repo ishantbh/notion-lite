@@ -76,7 +76,11 @@ export default async function Page({
       </div>
 
       <div className='mt-6 text-lg'>
-        <p>{note.content}</p>
+        {note.content ? (
+          <p>{note.content}</p>
+        ) : (
+          <p className='italic text-muted-foreground'>No content</p>
+        )}
       </div>
     </div>
   )
