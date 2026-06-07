@@ -9,40 +9,43 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Note } from '@/db/types'
 import {
-  type CreateNoteSchema,
-  createNoteSchema,
-} from '@/features/notes/schemas/create-note-schema'
+  type CreateEditNoteSchema,
+  createEditNoteSchema,
+} from '@/features/notes/schemas/create-edit-note-schema'
 import { createNote } from '@/features/notes/server/create-note'
+import { updateNote } from '@/features/notes/server/update-note'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 type Props = {
+  note?: Note
   close: () => void
 }
 
-export function CreateNoteForm({ close }: Props) {
-  const form = useForm<CreateNoteSchema>({
-    resolver: zodResolver(createNoteSchema),
+export function CreateEditNoteForm({ note, close }: Props) {
+  const form = useForm<CreateEditNoteSchema>({
+    resolver: zodResolver(createEditNoteSchema),
     defaultValues: {
-      title: '',
-      content: undefined,
+      title: note?.title ?? '',
+      content: note?.content ?? undefined,
     },
   })
 
   const { isSubmitting } = form.formState
 
-  async function onSubmit(data: CreateNoteSchema) {
-    const res = await createNote(data)
+  async function onSubmit(data: CreateEditNoteSchema) {
+    const res = note ? await updateNote(note.id, data) : await createNote(data)
 
     if (res?.error) {
       toast.error(res.error)
       return
     }
 
-    toast.success('Note created successfully')
+    toast.success('Action completed successfully')
 
     close()
   }

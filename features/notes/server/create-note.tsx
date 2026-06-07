@@ -3,14 +3,14 @@
 import { db } from '@/db'
 import { notes } from '@/db/schema'
 import {
-  createNoteSchema,
-  type CreateNoteSchema,
-} from '@/features/notes/schemas/create-note-schema'
+  createEditNoteSchema,
+  type CreateEditNoteSchema,
+} from '@/features/notes/schemas/create-edit-note-schema'
 import { auth } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
-export async function createNote(data: CreateNoteSchema) {
+export async function createNote(data: CreateEditNoteSchema) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -21,7 +21,7 @@ export async function createNote(data: CreateNoteSchema) {
 
   const { id: userId } = session.user
 
-  const parsed = createNoteSchema.safeParse(data)
+  const parsed = createEditNoteSchema.safeParse(data)
 
   if (!parsed.success) {
     return { error: 'Invalid inputs' }
