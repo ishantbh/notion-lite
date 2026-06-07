@@ -71,7 +71,7 @@ export default async function Page({
             <span className='sr-only sm:not-sr-only'>Edit</span>
           </Button>
 
-          <NoteDeleteConfirmationDialog />
+          <NoteDeleteConfirmationDialog noteId={note.id} />
         </div>
       </div>
 

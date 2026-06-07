@@ -13,9 +13,26 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { deleteNote } from '@/features/notes/server/delete-note'
 import { Trash2Icon } from 'lucide-react'
+import { toast } from 'sonner'
 
-export function NoteDeleteConfirmationDialog() {
+type Props = {
+  noteId: string
+}
+
+export function NoteDeleteConfirmationDialog({ noteId }: Props) {
+  async function handleDelete() {
+    const res = await deleteNote(noteId)
+
+    if (res.error) {
+      toast.error(res.error)
+      return
+    }
+
+    toast.success('Note deleted')
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -41,7 +58,9 @@ export function NoteDeleteConfirmationDialog() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel variant='outline'>Cancel</AlertDialogCancel>
-          <AlertDialogAction variant='destructive'>Delete</AlertDialogAction>
+          <AlertDialogAction variant='destructive' onClick={handleDelete}>
+            Delete
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
