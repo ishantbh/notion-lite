@@ -1,7 +1,7 @@
 import { db } from '@/db'
 import { notes } from '@/db/schema'
 import { auth } from '@/lib/auth'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 
@@ -18,10 +18,12 @@ export default async function Page({
     redirect('/login')
   }
 
+  const { id: userId } = session.user
+
   const { noteId } = await params
 
   const note = await db.query.notes.findFirst({
-    where: eq(notes.id, noteId),
+    where: and(eq(notes.id, noteId), eq(notes.userId, userId)),
   })
 
   if (!note) {
