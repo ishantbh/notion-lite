@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { CreateNoteForm } from '@/features/notes/components/create-note-form'
+import { CreateEditNoteForm } from '@/features/notes/components/create-edit-note-form'
 import { VariantProps } from 'class-variance-authority'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -43,7 +43,7 @@ export function CreateNoteDialog({
           <DialogDescription>Create a new note</DialogDescription>
         </DialogHeader>
 
-        <CreateNoteForm close={close} />
+        <CreateEditNoteForm close={close} />
       </DialogContent>
     </Dialog>
   )

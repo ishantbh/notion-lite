@@ -7,10 +7,11 @@ import {
   type CreateEditNoteSchema,
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { auth } from '@/lib/auth'
+import { and, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
-export async function createNote(data: CreateEditNoteSchema) {
+export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -29,7 +30,10 @@ export async function createNote(data: CreateEditNoteSchema) {
 
   const { title, content } = parsed.data
 
-  await db.insert(notes).values({ userId, title, content })
+  await db
+    .update(notes)
+    .set({ userId, title, content })
+    .where(and(eq(notes.id, noteId), eq(notes.userId, userId)))
 
-  revalidatePath('/dashboard')
+  revalidatePath(`/notes/${noteId}`)
 }
