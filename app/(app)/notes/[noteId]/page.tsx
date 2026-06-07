@@ -1,11 +1,10 @@
-import { Button } from '@/components/ui/button'
 import { db } from '@/db'
 import { notes } from '@/db/schema'
+import { EditNoteDialog } from '@/features/notes/components/edit-note-dialog'
 import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
 import { auth } from '@/lib/auth'
 import { formatDate } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
-import { PencilIcon, Trash2Icon } from 'lucide-react'
 import { headers } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 
@@ -62,14 +61,7 @@ export default async function Page({
         </div>
 
         <div className='flex items-center gap-2'>
-          <Button
-            variant='outline'
-            title='Edit'
-            className='flex items-center gap-2'
-          >
-            <PencilIcon />
-            <span className='sr-only sm:not-sr-only'>Edit</span>
-          </Button>
+          <EditNoteDialog note={note} />
 
           <NoteDeleteConfirmationDialog noteId={note.id} />
         </div>
