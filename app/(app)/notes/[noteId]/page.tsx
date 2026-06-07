@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { db } from '@/db'
 import { notes } from '@/db/schema'
+import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
 import { auth } from '@/lib/auth'
 import { formatDate } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
@@ -70,14 +71,7 @@ export default async function Page({
             <span className='sr-only sm:not-sr-only'>Edit</span>
           </Button>
 
-          <Button
-            variant='destructive'
-            title='Delete'
-            className='flex items-center gap-2'
-          >
-            <Trash2Icon />
-            <span className='sr-only sm:not-sr-only'>Delete</span>
-          </Button>
+          <NoteDeleteConfirmationDialog />
         </div>
       </div>
 
