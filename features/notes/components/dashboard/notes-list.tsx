@@ -1,8 +1,6 @@
-import { Button } from '@/components/ui/button'
 import { Note } from '@/db/types'
-import { NotesItem } from './notes-item'
-import { FolderOpenIcon, PlusIcon } from 'lucide-react'
 import { EmptyNotesList } from '@/features/notes/components/dashboard/empty-notes-list'
+import { NotesItem } from './notes-item'
 
 type Props = {
   notes: Note[]
