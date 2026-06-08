@@ -1,4 +1,5 @@
 import { user } from '@/db/schema/auth'
+import { NoteTags } from '@/db/schema/note-tag'
 import { relations } from 'drizzle-orm'
 import {
   index,
@@ -29,9 +30,11 @@ export const notes = pgTable(
   ],
 )
 
-export const notesRelations = relations(notes, ({ one }) => ({
+export const notesRelations = relations(notes, ({ one, many }) => ({
   user: one(user, {
     fields: [notes.userId],
     references: [user.id],
   }),
+
+  noteTags: many(NoteTags),
 }))

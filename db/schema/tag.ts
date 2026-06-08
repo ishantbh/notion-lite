@@ -1,10 +1,11 @@
 import { user } from '@/db/schema/auth'
+import { NoteTags } from '@/db/schema/note-tag'
 import { relations } from 'drizzle-orm'
 import {
-  index,
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
@@ -23,12 +24,14 @@ export const tags = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index('tags_userId_idx').on(table.userId)],
+  (table) => [uniqueIndex('tags_userId_name_idx').on(table.userId, table.name)],
 )
 
-export const tagsRelations = relations(tags, ({ one }) => ({
+export const tagsRelations = relations(tags, ({ one, many }) => ({
   user: one(user, {
     fields: [tags.userId],
     references: [user.id],
   }),
+
+  noteTags: many(NoteTags),
 }))
