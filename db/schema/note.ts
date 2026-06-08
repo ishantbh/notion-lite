@@ -1,5 +1,5 @@
 import { user } from '@/db/schema/auth'
-import { NoteTags } from '@/db/schema/note-tag'
+import { noteTags } from '@/db/schema/note-tag'
 import { relations } from 'drizzle-orm'
 import {
   index,
@@ -36,5 +36,5 @@ export const notesRelations = relations(notes, ({ one, many }) => ({
     references: [user.id],
   }),
 
-  noteTags: many(NoteTags),
+  noteTags: many(noteTags),
 }))

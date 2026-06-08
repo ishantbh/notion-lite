@@ -3,7 +3,7 @@ import { tags } from '@/db/schema/tag'
 import { relations } from 'drizzle-orm'
 import { index, pgTable, primaryKey, uuid } from 'drizzle-orm/pg-core'
 
-export const NoteTags = pgTable(
+export const noteTags = pgTable(
   'note_tags',
   {
     noteId: uuid('note_id')
@@ -21,13 +21,13 @@ export const NoteTags = pgTable(
   ],
 )
 
-export const noteTagsRelations = relations(NoteTags, ({ one }) => ({
+export const noteTagsRelations = relations(noteTags, ({ one }) => ({
   note: one(notes, {
-    fields: [NoteTags.noteId],
+    fields: [noteTags.noteId],
     references: [notes.id],
   }),
   tag: one(tags, {
-    fields: [NoteTags.tagId],
+    fields: [noteTags.tagId],
     references: [tags.id],
   }),
 }))
