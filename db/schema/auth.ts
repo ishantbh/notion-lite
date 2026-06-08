@@ -1,6 +1,7 @@
 import { notes } from '@/db/schema/note'
+import { tags } from '@/db/schema/tag'
 import { relations } from 'drizzle-orm'
-import { pgTable, text, timestamp, boolean, index } from 'drizzle-orm/pg-core'
+import { boolean, index, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -79,6 +80,7 @@ export const userRelations = relations(user, ({ many }) => ({
   accounts: many(account),
 
   notes: many(notes),
+  tags: many(tags),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
