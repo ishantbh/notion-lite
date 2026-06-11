@@ -14,9 +14,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSkeleton,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { Skeleton } from '@/components/ui/skeleton'
 import { authClient } from '@/lib/auth/auth-client'
 import { ChevronsUpDown, LogOutIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -28,9 +28,9 @@ export function AppSidebarFooter() {
 
   const { isMobile } = useSidebar()
 
-  if (!session) {
-    return null
-  }
+  // if (!session) {
+  //   return null
+  // }
 
   async function handleLogout() {
     await authClient.signOut({
@@ -51,7 +51,7 @@ export function AppSidebarFooter() {
       <SidebarMenu>
         <SidebarMenuItem>
           {isPending ? (
-            <SidebarMenuSkeleton className='h-8' />
+            <Skeleton className='w-full h-8' />
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
