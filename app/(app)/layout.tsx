@@ -1,5 +1,6 @@
 import { AppSidebar } from '@/components/app-sidebar/app-sidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import QueryClientProvider from '@/providers/query-client-provider'
 
 export default function MainLayout({
   children,
@@ -7,14 +8,16 @@ export default function MainLayout({
   children: React.ReactNode
 }>) {
   return (
-    <SidebarProvider>
-      <AppSidebar />
+    <QueryClientProvider>
+      <SidebarProvider>
+        <AppSidebar />
 
-      <div className='w-full'>
-        <SidebarTrigger />
+        <div className='w-full'>
+          <SidebarTrigger />
 
-        {children}
-      </div>
-    </SidebarProvider>
+          {children}
+        </div>
+      </SidebarProvider>
+    </QueryClientProvider>
   )
 }
