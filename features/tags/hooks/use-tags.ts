@@ -1,4 +1,4 @@
-import { fetchTags } from '@/features/notes/data/fetch-tags'
+import { fetchTags } from '@/features/tags/data/fetch-tags'
 import { useQuery } from '@tanstack/react-query'
 
 export function useTags() {

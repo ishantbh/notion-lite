@@ -10,7 +10,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useTags } from '@/features/notes/hooks/use-tags'
+import { useTags } from '@/features/tags/hooks/use-tags'
 import { HashIcon, PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'

@@ -1,4 +1,4 @@
-import { getTagsWithCounts } from '@/features/notes/data/get-tags-with-counts'
+import { getTagsWithCounts } from '@/features/tags/data/get-tags-with-counts'
 import type { GetTagsResponse } from '@/features/notes/types'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
