@@ -9,21 +9,21 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { Tag } from '@/db/types'
+import type { GetTagsResponse, TagListItem } from '@/features/notes/types'
 import { HashIcon, PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 export function AppSidebarTags() {
-  const [tags, setTags] = useState<Tag[]>([])
+  const [tags, setTags] = useState<TagListItem[]>([])
 
   useEffect(() => {
     const fetchTags = async () => {
       try {
         const res = await fetch('/api/tags')
-        const data = await res.json()
-        setTags(data['tags'] as Tag[])
+        const data: GetTagsResponse = await res.json()
+        setTags(data.tags)
       } catch (err) {
         toast.error('Error fetching tags')
       }
@@ -43,11 +43,15 @@ export function AppSidebarTags() {
         {tags.map((tag) => (
           <SidebarMenuItem key={tag.id}>
             <SidebarMenuButton asChild>
-              <Link href='/'>
+              <Link href={`/tags/${tag.id}`}>
                 <HashIcon className='text-muted-foreground' />
                 <span>{tag.name}</span>
               </Link>
             </SidebarMenuButton>
+
+            <SidebarMenuBadge className='text-muted-foreground'>
+              {tag.notesCount}
+            </SidebarMenuBadge>
           </SidebarMenuItem>
         ))}
       </SidebarMenu>
