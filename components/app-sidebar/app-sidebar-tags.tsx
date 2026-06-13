@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CreateTagDialog } from '@/features/tags/components/create-tag-dialog'
 import { useTags } from '@/features/tags/hooks/use-tags'
 import { HashIcon, PlusIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -27,10 +28,12 @@ export function AppSidebarTags() {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Tags</SidebarGroupLabel>
-      <SidebarGroupAction>
-        <PlusIcon className='size-4' />
-        <span className='sr-only'>Add Tag</span>
-      </SidebarGroupAction>
+      <CreateTagDialog>
+        <SidebarGroupAction>
+          <PlusIcon className='size-4' />
+          <span className='sr-only'>Add Tag</span>
+        </SidebarGroupAction>
+      </CreateTagDialog>
       <SidebarMenu>
         {isLoading
           ? Array.from({ length: 3 }, (_, i) => (
