@@ -1,4 +1,4 @@
-import type { GetTagsResponse } from '@/features/notes/types'
+import type { GetTagsResponse } from '@/features/tags/types'
 
 export async function fetchTags(): Promise<GetTagsResponse> {
   const res = await fetch('/api/tags')
