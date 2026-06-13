@@ -1,18 +1,20 @@
 'use client'
 
+import { AppSidebarTagActions } from '@/components/app-sidebar/app-sidebar-tag-actions'
+import { Badge } from '@/components/ui/badge'
 import {
   SidebarGroup,
   SidebarGroupAction,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuBadge,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CreateTagDialog } from '@/features/tags/components/create-tag-dialog'
 import { useTags } from '@/features/tags/hooks/use-tags'
-import { HashIcon, PlusIcon } from 'lucide-react'
+import { MoreHorizontalIcon, PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
@@ -47,14 +49,19 @@ export function AppSidebarTags() {
               <SidebarMenuItem key={tag.id}>
                 <SidebarMenuButton asChild>
                   <Link href={`/tags/${tag.id}`}>
-                    <HashIcon className='text-muted-foreground' />
+                    <Badge variant='outline' className='text-muted-foreground'>
+                      {tag.notesCount}
+                    </Badge>
                     <span>{tag.name}</span>
                   </Link>
                 </SidebarMenuButton>
 
-                <SidebarMenuBadge className='text-muted-foreground'>
-                  {tag.notesCount}
-                </SidebarMenuBadge>
+                <AppSidebarTagActions>
+                  <SidebarMenuAction className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
+                    <MoreHorizontalIcon />
+                    <span className='sr-only'>Actions</span>
+                  </SidebarMenuAction>
+                </AppSidebarTagActions>
               </SidebarMenuItem>
             ))}
       </SidebarMenu>
