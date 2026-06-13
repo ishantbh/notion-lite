@@ -18,9 +18,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { useCreateTag } from '@/features/tags/hooks/use-create-tag'
 import {
-  createTagSchema,
-  type CreateTagSchema,
-} from '@/features/tags/schemas/create-tag-schema'
+  createEditTagSchema,
+  type CreateEditTagSchema,
+} from '@/features/tags/schemas/create-edit-tag-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { useState } from 'react'
@@ -33,8 +33,8 @@ type Props = {
 export function CreateTagDialog({ children }: Props) {
   const [open, setOpen] = useState(false)
 
-  const form = useForm<CreateTagSchema>({
-    resolver: zodResolver(createTagSchema),
+  const form = useForm<CreateEditTagSchema>({
+    resolver: zodResolver(createEditTagSchema),
     defaultValues: {
       name: '',
     },
@@ -42,7 +42,7 @@ export function CreateTagDialog({ children }: Props) {
 
   const { mutate: createTag, isPending } = useCreateTag()
 
-  function onSubmit(data: CreateTagSchema) {
+  function onSubmit(data: CreateEditTagSchema) {
     createTag(data, {
       onSuccess: () => setOpen(false),
     })

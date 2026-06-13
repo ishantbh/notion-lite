@@ -3,13 +3,13 @@
 import { db } from '@/db'
 import { tags } from '@/db/schema'
 import {
-  createTagSchema,
-  type CreateTagSchema,
-} from '@/features/tags/schemas/create-tag-schema'
+  createEditTagSchema,
+  type CreateEditTagSchema,
+} from '@/features/tags/schemas/create-edit-tag-schema'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 
-export async function createTag(data: CreateTagSchema) {
+export async function createTag(data: CreateEditTagSchema) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -20,7 +20,7 @@ export async function createTag(data: CreateTagSchema) {
 
   const { id: userId } = session.user
 
-  const parsed = createTagSchema.safeParse(data)
+  const parsed = createEditTagSchema.safeParse(data)
 
   if (!parsed.success) {
     throw new Error('Invalid data')
