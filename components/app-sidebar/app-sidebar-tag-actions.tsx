@@ -7,13 +7,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useSidebar } from '@/components/ui/sidebar'
+import { TagDeleteConfirmationDialog } from '@/features/tags/components/tag-delete-confirmation-dialog'
 import { PencilIcon, TrashIcon } from 'lucide-react'
 
 type Props = {
   children: React.ReactNode
+  tagId: string
 }
 
-export function AppSidebarTagActions({ children }: Props) {
+export function AppSidebarTagActions({ children, tagId }: Props) {
   const { isMobile } = useSidebar()
 
   return (
@@ -29,10 +31,15 @@ export function AppSidebarTagActions({ children }: Props) {
           <PencilIcon />
           <span>Edit</span>
         </DropdownMenuItem>
-        <DropdownMenuItem variant='destructive'>
-          <TrashIcon />
-          <span>Move to trash</span>
-        </DropdownMenuItem>
+        <TagDeleteConfirmationDialog tagId={tagId}>
+          <DropdownMenuItem
+            variant='destructive'
+            onSelect={(e) => e.preventDefault()}
+          >
+            <TrashIcon />
+            <span>Move to trash</span>
+          </DropdownMenuItem>
+        </TagDeleteConfirmationDialog>
       </DropdownMenuContent>
     </DropdownMenu>
   )

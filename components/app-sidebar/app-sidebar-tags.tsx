@@ -56,7 +56,7 @@ export function AppSidebarTags() {
                   </Link>
                 </SidebarMenuButton>
 
-                <AppSidebarTagActions>
+                <AppSidebarTagActions tagId={tag.id}>
                   <SidebarMenuAction className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
                     <MoreHorizontalIcon />
                     <span className='sr-only'>Actions</span>
