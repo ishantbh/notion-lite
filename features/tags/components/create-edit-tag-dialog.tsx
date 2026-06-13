@@ -16,6 +16,7 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import type { Tag } from '@/db/types'
 import { useCreateTag } from '@/features/tags/hooks/use-create-tag'
 import {
   createEditTagSchema,
@@ -28,15 +29,16 @@ import { Controller, useForm } from 'react-hook-form'
 
 type Props = {
   children: React.ReactNode
+  tag?: Tag
 }
 
-export function CreateTagDialog({ children }: Props) {
+export function CreateEditTagDialog({ children, tag }: Props) {
   const [open, setOpen] = useState(false)
 
   const form = useForm<CreateEditTagSchema>({
     resolver: zodResolver(createEditTagSchema),
     defaultValues: {
-      name: '',
+      name: tag?.name ?? '',
     },
   })
 
