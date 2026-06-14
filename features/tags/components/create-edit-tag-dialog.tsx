@@ -16,12 +16,13 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import type { Tag } from '@/db/types'
 import { useCreateTag } from '@/features/tags/hooks/use-create-tag'
+import { useUpdateTag } from '@/features/tags/hooks/use-update-tag'
 import {
   createEditTagSchema,
   type CreateEditTagSchema,
 } from '@/features/tags/schemas/create-edit-tag-schema'
+import { TagListItem } from '@/features/tags/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { useState } from 'react'
@@ -29,7 +30,7 @@ import { Controller, useForm } from 'react-hook-form'
 
 type Props = {
   children: React.ReactNode
-  tag?: Tag
+  tag?: TagListItem
 }
 
 export function CreateEditTagDialog({ children, tag }: Props) {
@@ -42,12 +43,24 @@ export function CreateEditTagDialog({ children, tag }: Props) {
     },
   })
 
-  const { mutate: createTag, isPending } = useCreateTag()
+  const { mutate: createTag, isPending: isCreatePending } = useCreateTag()
+  const { mutate: updateTag, isPending: isUpdatePending } = useUpdateTag()
+
+  const isPending = isCreatePending || isUpdatePending
 
   function onSubmit(data: CreateEditTagSchema) {
-    createTag(data, {
-      onSuccess: () => setOpen(false),
-    })
+    if (tag) {
+      updateTag(
+        { ...data, tagId: tag.id },
+        {
+          onSuccess: () => setOpen(false),
+        },
+      )
+    } else {
+      createTag(data, {
+        onSuccess: () => setOpen(false),
+      })
+    }
   }
 
   return (
