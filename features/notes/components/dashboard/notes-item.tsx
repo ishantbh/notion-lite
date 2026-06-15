@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -21,10 +22,11 @@ export function NotesItem({ note }: Props) {
     <li>
       <Card>
         <CardHeader>
-          <CardTitle>
+          <CardTitle className='flex items-center gap-2'>
             <Button variant='link' className='p-0 text-base' asChild>
               <Link href={`/notes/${note.id}`}>{note.title}</Link>
             </Button>
+            {note.isDeleted && <Badge variant='destructive'>Deleted</Badge>}
           </CardTitle>
           <CardDescription className='text-sm opacity-80'>
             Last updated {formatDate(note.updatedAt)}
