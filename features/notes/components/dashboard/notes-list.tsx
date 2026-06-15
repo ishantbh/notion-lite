@@ -2,7 +2,7 @@ import { db } from '@/db'
 import { notes } from '@/db/schema'
 import { Note } from '@/db/types'
 import { EmptyNotesList } from '@/features/notes/components/dashboard/empty-notes-list'
-import { desc, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 import { NotesItem } from './notes-item'
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 
 export async function NotesList({ userId }: Props) {
   const userNotes: Note[] = await db.query.notes.findMany({
-    where: eq(notes.userId, userId),
+    where: and(eq(notes.userId, userId), eq(notes.isDeleted, false)),
     orderBy: desc(notes.updatedAt),
   })
 
