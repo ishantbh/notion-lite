@@ -18,7 +18,7 @@ export default async function Page() {
   const { id: userId } = session.user
 
   return (
-    <div className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col'>
+    <div className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col grow'>
       <DashboardHeader />
 
       <Suspense fallback={<NotesListSkeleton />}>

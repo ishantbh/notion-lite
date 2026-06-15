@@ -12,7 +12,7 @@ export default function MainLayout({
       <SidebarProvider>
         <AppSidebar />
 
-        <div className='w-full'>
+        <div className='w-full flex flex-col grow'>
           <SidebarTrigger />
 
           {children}
