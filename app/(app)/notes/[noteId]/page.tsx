@@ -1,7 +1,7 @@
+import { Badge } from '@/components/ui/badge'
 import { db } from '@/db'
 import { notes } from '@/db/schema'
-import { EditNoteDialog } from '@/features/notes/components/edit-note-dialog'
-import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
+import { RestoreDeletedNoteButton } from '@/features/notes/components/restore-deleted-note-button'
 import { auth } from '@/lib/auth'
 import { formatDate } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
@@ -44,7 +44,10 @@ export default async function Page({
     <div className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col'>
       <div className='flex items-start gap-4 justify-between'>
         <div className='space-y-1'>
-          <h1 className='text-xl sm:text-2xl font-semibold'>{note.title}</h1>
+          <h1 className='text-xl sm:text-2xl font-semibold flex items-center gap-2'>
+            <span>{note.title}</span>
+            {note.isDeleted && <Badge variant='destructive'>Deleted</Badge>}
+          </h1>
           <p className='text-sm'>By {note.user.name}</p>
           <p className='text-sm text-muted-foreground'>
             Created:{' '}
@@ -61,9 +64,7 @@ export default async function Page({
         </div>
 
         <div className='flex items-center gap-2'>
-          <EditNoteDialog note={note} />
-
-          <NoteDeleteConfirmationDialog noteId={note.id} />
+          <RestoreDeletedNoteButton noteId={note.id} />
         </div>
       </div>
 
