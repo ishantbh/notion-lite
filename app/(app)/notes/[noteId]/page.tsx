@@ -1,6 +1,8 @@
 import { Badge } from '@/components/ui/badge'
 import { db } from '@/db'
 import { notes } from '@/db/schema'
+import { EditNoteDialog } from '@/features/notes/components/edit-note-dialog'
+import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
 import { RestoreDeletedNoteButton } from '@/features/notes/components/restore-deleted-note-button'
 import { auth } from '@/lib/auth'
 import { formatDate } from 'date-fns'
@@ -63,9 +65,15 @@ export default async function Page({
           </p>
         </div>
 
-        <div className='flex items-center gap-2'>
+        {note.isDeleted ? (
           <RestoreDeletedNoteButton noteId={note.id} />
-        </div>
+        ) : (
+          <div className='flex items-center gap-2'>
+            <EditNoteDialog note={note} />
+
+            <NoteDeleteConfirmationDialog noteId={note.id} />
+          </div>
+        )}
       </div>
 
       <div className='mt-6 text-lg'>
