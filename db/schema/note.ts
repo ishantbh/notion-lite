@@ -2,6 +2,7 @@ import { user } from '@/db/schema/auth'
 import { noteTags } from '@/db/schema/note-tag'
 import { relations } from 'drizzle-orm'
 import {
+  boolean,
   index,
   pgTable,
   text,
@@ -19,6 +20,7 @@ export const notes = pgTable(
       .references(() => user.id, { onDelete: 'cascade' }),
     title: varchar({ length: 255 }).notNull(),
     content: text('content'),
+    isDeleted: boolean('is_deleted').default(false),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
@@ -27,6 +29,7 @@ export const notes = pgTable(
   },
   (table) => [
     index('notes_userId_updatedAt_idx').on(table.userId, table.updatedAt),
+    index('notes_deleted_idx').on(table.isDeleted),
   ],
 )
 
