@@ -4,7 +4,7 @@ import { notes } from '@/db/schema'
 import { EditNoteDialog } from '@/features/notes/components/edit-note-dialog'
 import { MoveToTrashConfirmationDialog } from '@/features/notes/components/move-to-trash-confirmation-dialog'
 import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
-import { RestoreDeletedNoteButton } from '@/features/notes/components/restore-deleted-note-button'
+import { RestoreDeletedNoteConfirmationDialog } from '@/features/notes/components/restore-deleted-note-confirmation-dialog'
 import { auth } from '@/lib/auth'
 import { formatDate } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
@@ -68,7 +68,7 @@ export default async function Page({
 
         {note.isDeleted ? (
           <div className='flex items-center gap-2'>
-            <RestoreDeletedNoteButton noteId={note.id} />
+            <RestoreDeletedNoteConfirmationDialog noteId={note.id} />
             <NoteDeleteConfirmationDialog noteId={note.id} />
           </div>
         ) : (
