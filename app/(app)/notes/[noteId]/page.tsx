@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { db } from '@/db'
 import { notes } from '@/db/schema'
 import { EditNoteDialog } from '@/features/notes/components/edit-note-dialog'
+import { MoveToTrashConfirmationDialog } from '@/features/notes/components/move-to-trash-confirmation-dialog'
 import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
 import { RestoreDeletedNoteButton } from '@/features/notes/components/restore-deleted-note-button'
 import { auth } from '@/lib/auth'
@@ -66,12 +67,14 @@ export default async function Page({
         </div>
 
         {note.isDeleted ? (
-          <RestoreDeletedNoteButton noteId={note.id} />
+          <div className='flex items-center gap-2'>
+            <RestoreDeletedNoteButton noteId={note.id} />
+            <NoteDeleteConfirmationDialog noteId={note.id} />
+          </div>
         ) : (
           <div className='flex items-center gap-2'>
             <EditNoteDialog note={note} />
-
-            <NoteDeleteConfirmationDialog noteId={note.id} />
+            <MoveToTrashConfirmationDialog noteId={note.id} />
           </div>
         )}
       </div>
