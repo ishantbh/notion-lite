@@ -32,7 +32,7 @@ export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
 
   await db
     .update(notes)
-    .set({ userId, title, content })
+    .set({ title, content })
     .where(and(eq(notes.id, noteId), eq(notes.userId, userId)))
 
   revalidatePath(`/notes/${noteId}`)
