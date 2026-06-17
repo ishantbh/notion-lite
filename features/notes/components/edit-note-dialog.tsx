@@ -15,7 +15,7 @@ import { PencilIcon } from 'lucide-react'
 import { useState } from 'react'
 
 type Props = {
-  note: Note
+  note: Note & { noteTags: { tagId: string }[] }
 }
 
 export function EditNoteDialog({ note }: Props) {
