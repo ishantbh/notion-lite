@@ -11,9 +11,12 @@ import {
   useComboboxAnchor,
 } from '@/components/ui/combobox'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useCreateTag } from '@/features/tags/hooks/use-create-tag'
 import { useTags } from '@/features/tags/hooks/use-tags'
-import type { TagListItem } from '@/features/tags/types'
+import type { CreateEditTagSchema } from '@/features/tags/schemas/create-edit-tag-schema'
+import type { TagListItem, TagPickerItem } from '@/features/tags/types'
 import React, { useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   id: string
@@ -39,14 +42,66 @@ export function TagPicker({
   const [query, setQuery] = useState('')
 
   const { data, isLoading } = useTags()
+  const createTagMutation = useCreateTag()
 
   if (isLoading) {
     return <Skeleton className='w-full h-8' />
   }
 
-  const tags = data?.tags ?? []
+  function tagExists(name: string) {
+    return tags.some(
+      (t) => t.name.trim().toLowerCase() === name.trim().toLowerCase(),
+    )
+  }
 
+  function getTagsForView(): TagPickerItem[] {
+    if (!trimmed || tagExists(trimmed)) return tags
+
+    return [
+      ...tags,
+      {
+        creatable: trimmed,
+        id: `create:${lowered}`,
+        name: `Create "${trimmed}"`,
+      },
+    ]
+  }
+
+  async function handleValueChange(selectedTags: TagPickerItem[]) {
+    const next = selectedTags
+      .filter((tag) => !tag.creatable)
+      .map((tag) => tag.id)
+
+    const creatableSelection = selectedTags.find((tag) => tag.creatable)
+
+    if (creatableSelection?.creatable) {
+      const newTagData: CreateEditTagSchema = {
+        name: creatableSelection.creatable,
+      }
+
+      try {
+        const newTagId = await createTagMutation.mutateAsync(newTagData)
+        onChange([...next, newTagId])
+        setQuery('')
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Error creating tag')
+      }
+
+      return
+    }
+
+    onChange(next)
+
+    setQuery('')
+  }
+
+  const tags: TagPickerItem[] = data?.tags ?? []
   const tagsMap = new Map(tags.map((tag) => [tag.id, tag]))
+
+  const trimmed = query.trim()
+  const lowered = trimmed.toLowerCase()
+
+  const tagsForView = getTagsForView()
 
   const selected = value
     .map((id) => tagsMap.get(id))
@@ -54,12 +109,10 @@ export function TagPicker({
 
   return (
     <Combobox
-      items={tags}
+      items={tagsForView}
       multiple
       value={selected}
-      onValueChange={(next) => {
-        onChange(next.map((tag) => tag.id))
-      }}
+      onValueChange={handleValueChange}
       inputValue={query}
       onInputValueChange={setQuery}
       autoHighlight
@@ -91,7 +144,7 @@ export function TagPicker({
         <ComboboxEmpty>No matching tags found.</ComboboxEmpty>
 
         <ComboboxList>
-          {(tag: TagListItem) => (
+          {(tag: TagPickerItem) => (
             <ComboboxItem key={tag.id} value={tag}>
               {tag.name}
             </ComboboxItem>
