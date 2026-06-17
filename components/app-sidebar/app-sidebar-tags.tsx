@@ -2,6 +2,7 @@
 
 import { AppSidebarTagActions } from '@/components/app-sidebar/app-sidebar-tag-actions'
 import { Badge } from '@/components/ui/badge'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   SidebarGroup,
   SidebarGroupAction,
@@ -28,43 +29,49 @@ export function AppSidebarTags() {
   }
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className='pe-0'>
       <SidebarGroupLabel>Tags</SidebarGroupLabel>
       <CreateEditTagDialog>
-        <SidebarGroupAction>
+        <SidebarGroupAction className='me-1'>
           <PlusIcon className='size-4' />
           <span className='sr-only'>Add Tag</span>
         </SidebarGroupAction>
       </CreateEditTagDialog>
-      <SidebarMenu>
-        {isLoading
-          ? Array.from({ length: 3 }, (_, i) => (
-              <SidebarMenuItem key={i}>
-                <div className='h-8 px-2 flex items-center justify-center'>
-                  <Skeleton className='w-full h-4' />
-                </div>
-              </SidebarMenuItem>
-            ))
-          : tags.map((tag) => (
-              <SidebarMenuItem key={tag.id}>
-                <SidebarMenuButton asChild>
-                  <Link href={`/tags/${tag.id}`}>
-                    <Badge variant='outline' className='text-muted-foreground'>
-                      {tag.notesCount}
-                    </Badge>
-                    <span>{tag.name}</span>
-                  </Link>
-                </SidebarMenuButton>
 
-                <AppSidebarTagActions tag={tag}>
-                  <SidebarMenuAction className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
-                    <MoreHorizontalIcon />
-                    <span className='sr-only'>Actions</span>
-                  </SidebarMenuAction>
-                </AppSidebarTagActions>
-              </SidebarMenuItem>
-            ))}
-      </SidebarMenu>
+      <ScrollArea className='w-full h-46 pe-3 scrollbar-thin'>
+        <SidebarMenu>
+          {isLoading
+            ? Array.from({ length: 3 }, (_, i) => (
+                <SidebarMenuItem key={i}>
+                  <div className='h-8 px-2 flex items-center justify-center'>
+                    <Skeleton className='w-full h-4' />
+                  </div>
+                </SidebarMenuItem>
+              ))
+            : tags.map((tag) => (
+                <SidebarMenuItem key={tag.id}>
+                  <SidebarMenuButton asChild>
+                    <Link href={`/tags/${tag.id}`}>
+                      <Badge
+                        variant='outline'
+                        className='text-muted-foreground'
+                      >
+                        {tag.notesCount}
+                      </Badge>
+                      <span>{tag.name}</span>
+                    </Link>
+                  </SidebarMenuButton>
+
+                  <AppSidebarTagActions tag={tag}>
+                    <SidebarMenuAction className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
+                      <MoreHorizontalIcon />
+                      <span className='sr-only'>Actions</span>
+                    </SidebarMenuAction>
+                  </AppSidebarTagActions>
+                </SidebarMenuItem>
+              ))}
+        </SidebarMenu>
+      </ScrollArea>
     </SidebarGroup>
   )
 }
