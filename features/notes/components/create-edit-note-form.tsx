@@ -16,13 +16,15 @@ import {
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { createNote } from '@/features/notes/server/create-note'
 import { updateNote } from '@/features/notes/server/update-note'
+import { TagPicker } from '@/features/tags/components/tag-picker'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQueryClient } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 type Props = {
-  note?: Note
+  note?: Note & { noteTags: { tagId: string }[] }
   close: () => void
 }
 
@@ -32,8 +34,11 @@ export function CreateEditNoteForm({ note, close }: Props) {
     defaultValues: {
       title: note?.title ?? '',
       content: note?.content ?? undefined,
+      tags: note?.noteTags.map((tag) => tag.tagId) ?? [],
     },
   })
+
+  const queryClient = useQueryClient()
 
   const { isSubmitting } = form.formState
 
@@ -48,6 +53,8 @@ export function CreateEditNoteForm({ note, close }: Props) {
     toast.success('Action completed successfully')
 
     close()
+
+    queryClient.invalidateQueries({ queryKey: ['tags'] })
   }
 
   return (
@@ -67,6 +74,18 @@ export function CreateEditNoteForm({ note, close }: Props) {
                 disabled={isSubmitting}
                 required
               />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name='tags'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor='tags'>Tags</FieldLabel>
+              <TagPicker {...field} id='tags' disabled={isSubmitting} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

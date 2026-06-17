@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/db'
-import { notes } from '@/db/schema'
+import { notes, noteTags } from '@/db/schema'
 import {
   createEditNoteSchema,
   type CreateEditNoteSchema,
@@ -28,12 +28,25 @@ export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
     return { error: 'Invalid inputs' }
   }
 
-  const { title, content } = parsed.data
+  const { title, content, tags } = parsed.data
 
-  await db
-    .update(notes)
-    .set({ title, content })
-    .where(and(eq(notes.id, noteId), eq(notes.userId, userId)))
+  await Promise.all([
+    db
+      .update(notes)
+      .set({ title, content })
+      .where(and(eq(notes.id, noteId), eq(notes.userId, userId)))
+      .returning({
+        id: notes.id,
+      }),
+
+    db.delete(noteTags).where(eq(noteTags.noteId, noteId)),
+  ])
+
+  if (tags.length) {
+    await db
+      .insert(noteTags)
+      .values(tags.map((tag) => ({ noteId, tagId: tag })))
+  }
 
   revalidatePath(`/notes/${noteId}`)
 }

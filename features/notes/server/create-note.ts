@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/db'
-import { notes } from '@/db/schema'
+import { notes, noteTags } from '@/db/schema'
 import {
   createEditNoteSchema,
   type CreateEditNoteSchema,
@@ -27,9 +27,20 @@ export async function createNote(data: CreateEditNoteSchema) {
     return { error: 'Invalid inputs' }
   }
 
-  const { title, content } = parsed.data
+  const { title, content, tags } = parsed.data
 
-  await db.insert(notes).values({ userId, title, content })
+  const [insertedNote] = await db
+    .insert(notes)
+    .values({ userId, title, content })
+    .returning({
+      id: notes.id,
+    })
+
+  if (tags.length) {
+    await db
+      .insert(noteTags)
+      .values(tags.map((tag) => ({ noteId: insertedNote.id, tagId: tag })))
+  }
 
   revalidatePath('/dashboard')
 }

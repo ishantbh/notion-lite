@@ -1,6 +1,5 @@
 import { db } from '@/db'
 import { notes } from '@/db/schema'
-import type { Note } from '@/db/types'
 import { NotesItem } from '@/features/notes/components/dashboard/notes-item'
 import { and, desc, eq } from 'drizzle-orm'
 import { Trash2Icon } from 'lucide-react'
@@ -10,7 +9,14 @@ type Props = {
 }
 
 export async function DeletedNotesList({ userId }: Props) {
-  const deletedNotes: Note[] = await db.query.notes.findMany({
+  const deletedNotes = await db.query.notes.findMany({
+    with: {
+      noteTags: {
+        with: {
+          tag: true,
+        },
+      },
+    },
     where: and(eq(notes.userId, userId), eq(notes.isDeleted, true)),
     orderBy: desc(notes.updatedAt),
   })
