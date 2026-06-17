@@ -36,6 +36,11 @@ export default async function Page({
           name: true,
         },
       },
+      noteTags: {
+        with: {
+          tag: true,
+        },
+      },
     },
   })
 
@@ -64,6 +69,11 @@ export default async function Page({
               {formatDate(note.updatedAt, 'dd MMM yyyy')}
             </span>
           </p>
+          <div className='flex flex-wrap items-center gap-2 mt-2'>
+            {note.noteTags.map(({ tag }) => (
+              <Badge key={tag.id}>{tag.name}</Badge>
+            ))}
+          </div>
         </div>
 
         {note.isDeleted ? (
