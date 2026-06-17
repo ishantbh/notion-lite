@@ -18,6 +18,7 @@ import { createNote } from '@/features/notes/server/create-note'
 import { updateNote } from '@/features/notes/server/update-note'
 import { TagPicker } from '@/features/tags/components/tag-picker'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQueryClient } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -37,6 +38,8 @@ export function CreateEditNoteForm({ note, close }: Props) {
     },
   })
 
+  const queryClient = useQueryClient()
+
   const { isSubmitting } = form.formState
 
   async function onSubmit(data: CreateEditNoteSchema) {
@@ -50,6 +53,8 @@ export function CreateEditNoteForm({ note, close }: Props) {
     toast.success('Action completed successfully')
 
     close()
+
+    queryClient.invalidateQueries({ queryKey: ['tags'] })
   }
 
   return (
