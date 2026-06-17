@@ -6,6 +6,7 @@ import {
   createEditTagSchema,
   type CreateEditTagSchema,
 } from '@/features/tags/schemas/create-edit-tag-schema'
+import { TagItem } from '@/features/tags/types'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 
@@ -28,5 +29,12 @@ export async function createTag(data: CreateEditTagSchema) {
 
   const { name } = parsed.data
 
-  await db.insert(tags).values({ name, userId })
+  const [insertedTag] = await db
+    .insert(tags)
+    .values({ name, userId })
+    .returning({
+      id: tags.id,
+    })
+
+  return insertedTag.id
 }
