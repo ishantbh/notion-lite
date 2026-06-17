@@ -22,7 +22,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 type Props = {
-  note?: Note
+  note?: Note & { noteTags: { tagId: string }[] }
   close: () => void
 }
 
@@ -32,6 +32,7 @@ export function CreateEditNoteForm({ note, close }: Props) {
     defaultValues: {
       title: note?.title ?? '',
       content: note?.content ?? undefined,
+      tags: note?.noteTags.map((tag) => tag.tagId) ?? [],
     },
   })
 
