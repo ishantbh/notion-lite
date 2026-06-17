@@ -5,22 +5,23 @@ import {
   CardAction,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Note } from '@/db/types'
+import { Note, Tag } from '@/db/types'
 import { formatDate } from '@/lib/utils'
 import { ExternalLinkIcon } from 'lucide-react'
 import Link from 'next/link'
 
 type Props = {
-  note: Note
+  note: Note & { noteTags: { tag: Tag }[] }
 }
 
 export function NotesItem({ note }: Props) {
   return (
     <li>
-      <Card>
+      <Card className='h-full'>
         <CardHeader>
           <CardTitle className='flex items-center gap-2'>
             <Button variant='link' className='p-0 text-base' asChild>
@@ -45,6 +46,16 @@ export function NotesItem({ note }: Props) {
             <span className='opacity-80 italic'>No content</span>
           )}
         </CardContent>
+
+        {note.noteTags.length > 0 && (
+          <CardFooter>
+            <div className='flex flex-wrap items-center gap-2'>
+              {note.noteTags.map(({ tag }) => (
+                <Badge key={tag.id}>{tag.name}</Badge>
+              ))}
+            </div>
+          </CardFooter>
+        )}
       </Card>
     </li>
   )
