@@ -16,6 +16,7 @@ import {
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { createNote } from '@/features/notes/server/create-note'
 import { updateNote } from '@/features/notes/server/update-note'
+import { TagPicker } from '@/features/tags/components/tag-picker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
@@ -68,6 +69,18 @@ export function CreateEditNoteForm({ note, close }: Props) {
                 disabled={isSubmitting}
                 required
               />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name='tags'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor='tags'>Tags</FieldLabel>
+              <TagPicker {...field} id='tags' disabled={isSubmitting} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
