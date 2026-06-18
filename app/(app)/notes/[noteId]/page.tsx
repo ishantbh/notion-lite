@@ -1,15 +1,14 @@
 import { Badge } from '@/components/ui/badge'
-import { db } from '@/db'
-import { notes } from '@/db/schema'
-import { EditNoteDialog } from '@/features/notes/components/edit-note-dialog'
+import { Button } from '@/components/ui/button'
 import { MoveToTrashConfirmationDialog } from '@/features/notes/components/move-to-trash-confirmation-dialog'
 import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
 import { RestoreDeletedNoteConfirmationDialog } from '@/features/notes/components/restore-deleted-note-confirmation-dialog'
 import { getNoteByIdWithUserNameAndTags } from '@/features/notes/data/get-note-by-id-with-user-name-and-tags'
 import { auth } from '@/lib/auth'
 import { formatDate } from 'date-fns'
-import { and, eq } from 'drizzle-orm'
+import { PencilIcon } from 'lucide-react'
 import { headers } from 'next/headers'
+import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
 export default async function Page({
@@ -70,7 +69,18 @@ export default async function Page({
           </div>
         ) : (
           <div className='flex items-center gap-2'>
-            <EditNoteDialog note={note} />
+            <Button
+              variant='outline'
+              title='Edit'
+              className='flex items-center gap-2'
+              asChild
+            >
+              <Link href={`/notes/${note.id}/edit`}>
+                <PencilIcon />
+                <span className='sr-only sm:not-sr-only'>Edit</span>
+              </Link>
+            </Button>
+
             <MoveToTrashConfirmationDialog noteId={note.id} />
           </div>
         )}
