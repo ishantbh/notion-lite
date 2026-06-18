@@ -5,6 +5,7 @@ import { EditNoteDialog } from '@/features/notes/components/edit-note-dialog'
 import { MoveToTrashConfirmationDialog } from '@/features/notes/components/move-to-trash-confirmation-dialog'
 import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-delete-confirmation-dialog'
 import { RestoreDeletedNoteConfirmationDialog } from '@/features/notes/components/restore-deleted-note-confirmation-dialog'
+import { getNoteByIdWithUserNameAndTags } from '@/features/notes/data/get-note-by-id-with-user-name-and-tags'
 import { auth } from '@/lib/auth'
 import { formatDate } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
@@ -28,21 +29,7 @@ export default async function Page({
 
   const { noteId } = await params
 
-  const note = await db.query.notes.findFirst({
-    where: and(eq(notes.id, noteId), eq(notes.userId, userId)),
-    with: {
-      user: {
-        columns: {
-          name: true,
-        },
-      },
-      noteTags: {
-        with: {
-          tag: true,
-        },
-      },
-    },
-  })
+  const note = await getNoteByIdWithUserNameAndTags({ noteId, userId })
 
   if (!note) {
     notFound()
