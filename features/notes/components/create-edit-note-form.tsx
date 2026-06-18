@@ -25,7 +25,7 @@ import { toast } from 'sonner'
 
 type Props = {
   note?: Note & { noteTags: { tagId: string }[] }
-  close: () => void
+  close?: () => void
 }
 
 export function CreateEditNoteForm({ note, close }: Props) {
@@ -52,7 +52,7 @@ export function CreateEditNoteForm({ note, close }: Props) {
 
     toast.success('Action completed successfully')
 
-    close()
+    close?.()
 
     queryClient.invalidateQueries({ queryKey: ['tags'] })
   }

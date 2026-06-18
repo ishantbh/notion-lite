@@ -1,3 +1,4 @@
+import { CreateEditNoteForm } from '@/features/notes/components/create-edit-note-form'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -20,6 +21,10 @@ export default async function Page() {
             Create a new note
           </p>
         </div>
+      </div>
+
+      <div className='mt-6'>
+        <CreateEditNoteForm />
       </div>
     </div>
   )
