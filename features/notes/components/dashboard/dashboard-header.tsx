@@ -1,4 +1,6 @@
-import { CreateNoteDialog } from '@/features/notes/components/create-note-dialog'
+import { Button } from '@/components/ui/button'
+import { PlusIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export function DashboardHeader() {
   return (
@@ -10,7 +12,12 @@ export function DashboardHeader() {
         </p>
       </div>
 
-      <CreateNoteDialog />
+      <Button asChild>
+        <Link href='/notes/create'>
+          <PlusIcon />
+          <span>New Note</span>
+        </Link>
+      </Button>
     </div>
   )
 }
