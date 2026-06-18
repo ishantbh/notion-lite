@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/button'
-import { PlusIcon } from 'lucide-react'
-import Link from 'next/link'
+import { CreateNoteButton } from '@/features/notes/components/dashboard/create-note-button'
 
 export function DashboardHeader() {
   return (
@@ -12,12 +10,7 @@ export function DashboardHeader() {
         </p>
       </div>
 
-      <Button asChild>
-        <Link href='/notes/create'>
-          <PlusIcon />
-          <span>New Note</span>
-        </Link>
-      </Button>
+      <CreateNoteButton />
     </div>
   )
 }
