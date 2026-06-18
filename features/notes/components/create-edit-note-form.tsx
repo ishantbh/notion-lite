@@ -20,15 +20,15 @@ import { TagPicker } from '@/features/tags/components/tag-picker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 type Props = {
   note?: Note & { noteTags: { tagId: string }[] }
-  close?: () => void
 }
 
-export function CreateEditNoteForm({ note, close }: Props) {
+export function CreateEditNoteForm({ note }: Props) {
   const form = useForm<CreateEditNoteSchema>({
     resolver: zodResolver(createEditNoteSchema),
     defaultValues: {
@@ -38,23 +38,38 @@ export function CreateEditNoteForm({ note, close }: Props) {
     },
   })
 
+  const router = useRouter()
+
   const queryClient = useQueryClient()
 
   const { isSubmitting } = form.formState
 
   async function onSubmit(data: CreateEditNoteSchema) {
-    const res = note ? await updateNote(note.id, data) : await createNote(data)
+    if (note) {
+      // Update note
+      const res = await updateNote(note.id, data)
 
-    if (res?.error) {
-      toast.error(res.error)
-      return
+      if (res?.error) {
+        toast.error(res.error)
+        return
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['tags'] })
+      toast.success('Note updated successfully')
+      router.replace(`/notes/${res.noteId}`)
+    } else {
+      // Create new note
+      const res = await createNote(data)
+
+      if (res?.error) {
+        toast.error(res.error)
+        return
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['tags'] })
+      toast.success('Note created successfully')
+      router.replace(`/notes/${res.noteId}`)
     }
-
-    toast.success('Action completed successfully')
-
-    close?.()
-
-    queryClient.invalidateQueries({ queryKey: ['tags'] })
   }
 
   return (

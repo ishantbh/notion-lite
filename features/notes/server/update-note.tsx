@@ -8,7 +8,6 @@ import {
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { auth } from '@/lib/auth'
 import { and, eq } from 'drizzle-orm'
-import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
 export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
@@ -48,5 +47,5 @@ export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
       .values(tags.map((tag) => ({ noteId, tagId: tag })))
   }
 
-  revalidatePath(`/notes/${noteId}`)
+  return { noteId }
 }

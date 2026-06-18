@@ -7,7 +7,6 @@ import {
   type CreateEditNoteSchema,
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { auth } from '@/lib/auth'
-import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
 export async function createNote(data: CreateEditNoteSchema) {
@@ -42,5 +41,5 @@ export async function createNote(data: CreateEditNoteSchema) {
       .values(tags.map((tag) => ({ noteId: insertedNote.id, tagId: tag })))
   }
 
-  revalidatePath('/dashboard')
+  return { noteId: insertedNote.id }
 }
