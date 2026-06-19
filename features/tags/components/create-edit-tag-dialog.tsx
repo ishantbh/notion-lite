@@ -27,6 +27,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 type Props = {
   children: React.ReactNode
@@ -43,23 +44,25 @@ export function CreateEditTagDialog({ children, tag }: Props) {
     },
   })
 
-  const { mutate: createTag, isPending: isCreatePending } = useCreateTag()
-  const { mutate: updateTag, isPending: isUpdatePending } = useUpdateTag()
+  const { mutateAsync: createTag, isPending: isCreatePending } = useCreateTag()
+  const { mutateAsync: updateTag, isPending: isUpdatePending } = useUpdateTag()
 
   const isPending = isCreatePending || isUpdatePending
 
-  function onSubmit(data: CreateEditTagSchema) {
-    if (tag) {
-      updateTag(
-        { ...data, tagId: tag.id },
-        {
-          onSuccess: () => setOpen(false),
-        },
-      )
-    } else {
-      createTag(data, {
-        onSuccess: () => setOpen(false),
-      })
+  async function onSubmit(data: CreateEditTagSchema) {
+    try {
+      if (tag) {
+        await updateTag({ ...data, tagId: tag.id })
+        toast.success('Tag updated successfully')
+      } else {
+        await createTag(data)
+        toast.success('Tag created successfully')
+      }
+
+      setOpen(false)
+      form.reset()
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Something went wrong')
     }
   }
 
