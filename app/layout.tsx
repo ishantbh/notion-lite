@@ -1,6 +1,7 @@
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
+import QueryClientProvider from '@/providers/query-client-provider'
 import { ThemeProvider } from '@/providers/theme/theme-provider'
 import type { Metadata } from 'next'
 import { Geist_Mono, Inter } from 'next/font/google'
@@ -41,7 +42,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TooltipProvider>
-            <main className='flex grow'>{children}</main>
+            <main className='flex grow'>
+              <QueryClientProvider>{children}</QueryClientProvider>
+            </main>
           </TooltipProvider>
 
           <Toaster />

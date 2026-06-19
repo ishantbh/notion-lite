@@ -21,6 +21,7 @@ export const notes = pgTable(
     title: varchar({ length: 255 }).notNull(),
     content: text('content'),
     isDeleted: boolean('is_deleted').default(false),
+    isStarred: boolean('is_starred').notNull().default(false),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
@@ -30,6 +31,7 @@ export const notes = pgTable(
   (table) => [
     index('notes_userId_updatedAt_idx').on(table.userId, table.updatedAt),
     index('notes_deleted_idx').on(table.isDeleted),
+    index('notes_starred_idx').on(table.isStarred),
   ],
 )
 
