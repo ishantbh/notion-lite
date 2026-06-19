@@ -9,18 +9,21 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import Link from 'next/link'
-import { Controller, useForm } from 'react-hook-form'
 import {
   signUpSchema,
   type SignUpSchema,
 } from '@/features/auth/schemas/auth-schema'
+import { authClient } from '@/lib/auth/auth-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
-import { authClient } from '@/lib/auth/auth-client'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 export function SignUpForm() {
+  const router = useRouter()
+
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -41,6 +44,7 @@ export function SignUpForm() {
       {
         onSuccess: () => {
           toast.success('Sign up successful')
+          router.push('/dashboard')
         },
         onError: (ctx) => {
           toast.error(ctx.error.message)
