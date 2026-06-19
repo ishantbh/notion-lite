@@ -12,5 +12,11 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard', '/notes/:path*', '/trash', '/tags/:path*'],
+  matcher: [
+    '/dashboard',
+    '/notes/:path*',
+    '/trash',
+    '/tags/:path*',
+    '/starred',
+  ],
 }
