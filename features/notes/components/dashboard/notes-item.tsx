@@ -10,8 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Note, Tag } from '@/db/types'
+import { NotesItemStarButton } from '@/features/notes/components/notes-item-star-button'
 import { formatDate } from '@/lib/utils'
-import { ExternalLinkIcon } from 'lucide-react'
+import { ExternalLinkIcon, StarIcon, StarOffIcon } from 'lucide-react'
 import Link from 'next/link'
 
 type Props = {
@@ -33,6 +34,8 @@ export function NotesItem({ note }: Props) {
             Last updated {formatDate(note.updatedAt)}
           </CardDescription>
           <CardAction>
+            <NotesItemStarButton noteId={note.id} isStarred={note.isStarred} />
+
             <Button variant='ghost' size='icon' asChild>
               <Link href={`/notes/${note.id}`}>
                 <ExternalLinkIcon />
