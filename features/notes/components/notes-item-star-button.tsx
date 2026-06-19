@@ -10,9 +10,14 @@ import { toast } from 'sonner'
 type Props = {
   isStarred: boolean
   noteId: string
+  size?: 'default' | 'lg'
 }
 
-export function NotesItemStarButton({ noteId, isStarred }: Props) {
+export function NotesItemStarButton({
+  noteId,
+  isStarred,
+  size = 'default',
+}: Props) {
   const [optimisticStarred, setOptimisticStarred] = useOptimistic(isStarred)
 
   async function handleToggle() {
@@ -31,8 +36,17 @@ export function NotesItemStarButton({ noteId, isStarred }: Props) {
   }
 
   return (
-    <Button variant='ghost' size='icon' onClick={handleToggle}>
-      <StarIcon className={cn({ 'fill-current': optimisticStarred })} />
+    <Button
+      variant='ghost'
+      size={size === 'lg' ? 'icon-lg' : 'icon'}
+      onClick={handleToggle}
+    >
+      <StarIcon
+        className={cn(
+          { 'size-5': size === 'lg' },
+          { 'fill-current': optimisticStarred },
+        )}
+      />
     </Button>
   )
 }
