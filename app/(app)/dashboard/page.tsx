@@ -6,9 +6,14 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 
-export default async function Page(props: {
-  searchParams?: Promise<{ page?: string }>
-}) {
+type Props = {
+  searchParams?: Promise<{
+    query?: string
+    page?: string
+  }>
+}
+
+export default async function Page(props: Props) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -20,6 +25,7 @@ export default async function Page(props: {
   const { id: userId } = session.user
 
   const searchParams = await props.searchParams
+  const query = searchParams?.query?.trim()
   const currentPage = Number(searchParams?.page) || 1
 
   if (currentPage <= 0) {
@@ -31,7 +37,7 @@ export default async function Page(props: {
       <DashboardHeader />
 
       <Suspense fallback={<NotesListSkeleton />}>
-        <NotesList userId={userId} currentPage={currentPage} />
+        <NotesList userId={userId} query={query} currentPage={currentPage} />
       </Suspense>
     </div>
   )
