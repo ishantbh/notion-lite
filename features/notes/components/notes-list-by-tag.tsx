@@ -5,6 +5,7 @@ import { NotesItem } from '@/features/notes/components/dashboard/notes-item'
 import { NotesPagination } from '@/features/notes/components/dashboard/notes-pagination'
 import { NOTES_PER_PAGE } from '@/lib/utils'
 import { and, count, desc, eq, exists } from 'drizzle-orm'
+import { redirect } from 'next/navigation'
 
 type Props = {
   userId: string
@@ -44,6 +45,10 @@ export async function NotesListByTag({ userId, tagId, currentPage }: Props) {
 
   if (totalPages === 0) {
     return <EmptyNotesList />
+  }
+
+  if (currentPage > totalPages) {
+    redirect(`/tags/${tagId}?page=${totalPages}`)
   }
 
   return (
