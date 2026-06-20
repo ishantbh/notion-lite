@@ -57,11 +57,7 @@ export async function NotesList({ userId, currentPage, query }: Props) {
         <EmptyNotesList query={query} />
       )}
 
-      {totalPages > 0 && (
-        <div className='mt-auto mb-4'>
-          <NotesPagination totalPages={totalPages} />
-        </div>
-      )}
+      {totalPages > 0 && <NotesPagination totalPages={totalPages} />}
     </div>
   )
 }
