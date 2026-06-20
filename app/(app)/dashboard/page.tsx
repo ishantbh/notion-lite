@@ -22,6 +22,10 @@ export default async function Page(props: {
   const searchParams = await props.searchParams
   const currentPage = Number(searchParams?.page) || 1
 
+  if (currentPage <= 0) {
+    redirect('/dashboard')
+  }
+
   return (
     <div className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col grow'>
       <DashboardHeader />
