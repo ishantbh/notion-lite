@@ -5,6 +5,7 @@ import { NotesPagination } from '@/features/notes/components/dashboard/notes-pag
 import { NOTES_PER_PAGE } from '@/lib/utils'
 import { and, count, desc, eq } from 'drizzle-orm'
 import { Trash2Icon } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
 type Props = {
   userId: string
@@ -44,6 +45,10 @@ export async function DeletedNotesList({ userId, currentPage }: Props) {
         </h2>
       </div>
     )
+  }
+
+  if (currentPage > totalPages) {
+    redirect(`/trash?page=${totalPages}`)
   }
 
   return (
