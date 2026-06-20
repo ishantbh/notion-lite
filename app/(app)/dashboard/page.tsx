@@ -33,12 +33,14 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col grow'>
+    <div className='flex flex-col grow'>
       <DashboardHeader />
 
-      <Suspense fallback={<NotesListSkeleton />}>
-        <NotesList userId={userId} query={query} currentPage={currentPage} />
-      </Suspense>
+      <main className='w-full max-w-7xl mx-auto px-4 flex flex-col grow'>
+        <Suspense fallback={<NotesListSkeleton />}>
+          <NotesList userId={userId} query={query} currentPage={currentPage} />
+        </Suspense>
+      </main>
     </div>
   )
 }
