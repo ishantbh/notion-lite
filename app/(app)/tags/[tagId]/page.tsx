@@ -1,3 +1,4 @@
+import { HeaderWithSidebar } from '@/components/header-with-sidebar'
 import { db } from '@/db'
 import { tags } from '@/db/schema'
 import { NotesListSkeleton } from '@/features/notes/components/dashboard/skeletons/notes-list-skeleton'
@@ -46,24 +47,19 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col grow'>
-      <div className='flex items-center gap-4 justify-between'>
-        <div className='space-y-1'>
-          <h1 className='text-xl sm:text-2xl font-semibold'>{tag.name}</h1>
-          <p className='text-sm sm:text-base text-muted-foreground'>
-            View and manage your notes for tag &quot;{tag.name}&quot;
-          </p>
-        </div>
-      </div>
+    <div className='flex flex-col grow'>
+      <HeaderWithSidebar title={tag.name} />
 
-      <Suspense fallback={<NotesListSkeleton />}>
-        <NotesListByTag
-          userId={userId}
-          tagId={tag.id}
-          query={query}
-          currentPage={currentPage}
-        />
-      </Suspense>
+      <main className='w-full max-w-7xl mx-auto px-4 flex flex-col grow'>
+        <Suspense fallback={<NotesListSkeleton />}>
+          <NotesListByTag
+            userId={userId}
+            tagId={tagId}
+            query={query}
+            currentPage={currentPage}
+          />
+        </Suspense>
+      </main>
     </div>
   )
 }
