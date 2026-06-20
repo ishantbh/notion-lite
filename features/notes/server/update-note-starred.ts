@@ -30,4 +30,5 @@ export async function updateNoteStarred({
     .where(and(eq(notes.id, noteId), eq(notes.userId, userId)))
 
   revalidatePath('/dashboard')
+  revalidatePath(`/notes/${noteId}`)
 }
