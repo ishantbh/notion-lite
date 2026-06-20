@@ -5,6 +5,7 @@ import { NotesPagination } from '@/features/notes/components/dashboard/notes-pag
 import { NOTES_PER_PAGE } from '@/lib/utils'
 import { and, count, desc, eq } from 'drizzle-orm'
 import { FolderOpenIcon } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
 type Props = {
   userId: string
@@ -44,6 +45,10 @@ export async function StarredNotesList({ userId, currentPage }: Props) {
         </h2>
       </div>
     )
+  }
+
+  if (currentPage > totalPages) {
+    redirect(`/starred?page=${totalPages}`)
   }
 
   return (
