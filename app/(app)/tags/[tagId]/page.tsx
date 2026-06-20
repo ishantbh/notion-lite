@@ -8,10 +8,15 @@ import { headers } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import { Suspense } from 'react'
 
-export default async function Page(props: {
+type Props = {
   params: Promise<{ tagId: string }>
-  searchParams?: Promise<{ page?: string }>
-}) {
+  searchParams?: Promise<{
+    query?: string
+    page?: string
+  }>
+}
+
+export default async function Page(props: Props) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -33,6 +38,7 @@ export default async function Page(props: {
   }
 
   const searchParams = await props.searchParams
+  const query = searchParams?.query?.trim()
   const currentPage = Number(searchParams?.page) || 1
 
   if (currentPage <= 0) {
@@ -54,6 +60,7 @@ export default async function Page(props: {
         <NotesListByTag
           userId={userId}
           tagId={tag.id}
+          query={query}
           currentPage={currentPage}
         />
       </Suspense>
