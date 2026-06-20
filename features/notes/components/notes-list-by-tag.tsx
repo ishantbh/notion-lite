@@ -3,17 +3,24 @@ import { notes, noteTags } from '@/db/schema'
 import { EmptyNotesList } from '@/features/notes/components/dashboard/empty-notes-list'
 import { NotesItem } from '@/features/notes/components/dashboard/notes-item'
 import { NotesPagination } from '@/features/notes/components/dashboard/notes-pagination'
+import { NotesSearch } from '@/features/notes/components/dashboard/notes-search'
 import { NOTES_PER_PAGE } from '@/lib/utils'
-import { and, count, desc, eq, exists } from 'drizzle-orm'
+import { and, count, desc, eq, exists, ilike, or } from 'drizzle-orm'
 import { redirect } from 'next/navigation'
 
 type Props = {
   userId: string
   tagId: string
+  query?: string
   currentPage: number
 }
 
-export async function NotesListByTag({ userId, tagId, currentPage }: Props) {
+export async function NotesListByTag({
+  userId,
+  tagId,
+  query,
+  currentPage,
+}: Props) {
   const whereClause = and(
     eq(notes.userId, userId),
     exists(
@@ -22,6 +29,9 @@ export async function NotesListByTag({ userId, tagId, currentPage }: Props) {
         .from(noteTags)
         .where(and(eq(noteTags.noteId, notes.id), eq(noteTags.tagId, tagId))),
     ),
+    query?.trim()
+      ? or(ilike(notes.title, `%${query}%`), ilike(notes.content, `%${query}%`))
+      : undefined,
   )
 
   const [userNotesWithTagIds, [{ total }]] = await Promise.all([
@@ -43,23 +53,29 @@ export async function NotesListByTag({ userId, tagId, currentPage }: Props) {
 
   const totalPages = Math.ceil(total / NOTES_PER_PAGE)
 
-  if (totalPages === 0) {
-    return <EmptyNotesList />
-  }
-
-  if (currentPage > totalPages) {
+  if (totalPages > 0 && currentPage > totalPages) {
     redirect(`/tags/${tagId}?page=${totalPages}`)
   }
 
   return (
-    <div className='flex flex-col gap-4 grow justify-between'>
-      <ul className='mt-8 grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-        {userNotesWithTagIds.map((note) => (
-          <NotesItem key={note.id} note={note} />
-        ))}
-      </ul>
+    <div className='flex flex-col gap-8 grow mt-8'>
+      <NotesSearch count={total} />
 
-      <NotesPagination totalPages={totalPages} />
+      {userNotesWithTagIds.length ? (
+        <ul className='grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+          {userNotesWithTagIds.map((note) => (
+            <NotesItem key={note.id} note={note} />
+          ))}
+        </ul>
+      ) : (
+        <EmptyNotesList query={query} />
+      )}
+
+      {totalPages > 0 && (
+        <div className='mt-auto'>
+          <NotesPagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   )
 }
