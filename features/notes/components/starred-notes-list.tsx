@@ -21,11 +21,7 @@ export async function StarredNotesList({ userId, currentPage }: Props) {
           },
         },
       },
-      where: and(
-        eq(notes.userId, userId),
-        eq(notes.isDeleted, false),
-        eq(notes.isStarred, true),
-      ),
+      where: and(eq(notes.userId, userId), eq(notes.isStarred, true)),
       orderBy: desc(notes.updatedAt),
       limit: NOTES_PER_PAGE,
       offset: (currentPage - 1) * NOTES_PER_PAGE,
@@ -33,13 +29,7 @@ export async function StarredNotesList({ userId, currentPage }: Props) {
     db
       .select({ total: count() })
       .from(notes)
-      .where(
-        and(
-          eq(notes.userId, userId),
-          eq(notes.isDeleted, false),
-          eq(notes.isStarred, true),
-        ),
-      ),
+      .where(and(eq(notes.userId, userId), eq(notes.isStarred, true))),
   ])
 
   const totalPages = Math.ceil(total / NOTES_PER_PAGE)
