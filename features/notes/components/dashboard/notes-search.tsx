@@ -10,7 +10,7 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 
-export function NotesSearch({ count }: { count: number }) {
+export function NotesSearch({ count }: { count?: number }) {
   const searchParams = useSearchParams()
   const { replace } = useRouter()
   const pathname = usePathname()
@@ -29,20 +29,23 @@ export function NotesSearch({ count }: { count: number }) {
   }, 300)
 
   return (
-    <InputGroup className='w-full max-w-md mx-auto'>
+    <InputGroup className='w-full mx-auto border border-border'>
       <InputGroupInput
         defaultValue={searchParams.get('query')?.toString()}
         placeholder='Search...'
         onChange={(e) => {
           handleSearch(e.target.value)
         }}
+        className='text-sm'
       />
       <InputGroupAddon>
-        <SearchIcon />
+        <SearchIcon className='size-4' />
       </InputGroupAddon>
-      <InputGroupAddon align='inline-end'>
-        {count} {count === 1 ? 'result' : 'results'}
-      </InputGroupAddon>
+      {count !== undefined && (
+        <InputGroupAddon align='inline-end' className='text-sm'>
+          {count} {count === 1 ? 'result' : 'results'}
+        </InputGroupAddon>
+      )}
     </InputGroup>
   )
 }

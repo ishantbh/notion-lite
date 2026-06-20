@@ -2,7 +2,6 @@ import { db } from '@/db'
 import { notes } from '@/db/schema'
 import { NotesItem } from '@/features/notes/components/dashboard/notes-item'
 import { NotesPagination } from '@/features/notes/components/dashboard/notes-pagination'
-import { NotesSearch } from '@/features/notes/components/dashboard/notes-search'
 import { NOTES_PER_PAGE } from '@/lib/utils'
 import { and, count, desc, eq, ilike, or } from 'drizzle-orm'
 import { Trash2Icon } from 'lucide-react'
@@ -48,8 +47,6 @@ export async function DeletedNotesList({ userId, currentPage, query }: Props) {
 
   return (
     <div className='flex flex-col gap-8 grow mt-8'>
-      <NotesSearch count={total} />
-
       {deletedNotes.length ? (
         <ul className='grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3'>
           {deletedNotes.map((note) => (
@@ -70,11 +67,7 @@ export async function DeletedNotesList({ userId, currentPage, query }: Props) {
         </div>
       )}
 
-      {totalPages > 0 && (
-        <div className='mt-auto'>
-          <NotesPagination totalPages={totalPages} />
-        </div>
-      )}
+      {totalPages > 0 && <NotesPagination totalPages={totalPages} />}
     </div>
   )
 }

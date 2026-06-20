@@ -1,5 +1,5 @@
 import { AppSidebar } from '@/components/app-sidebar/app-sidebar'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 
 export default function MainLayout({
   children,
@@ -10,11 +10,7 @@ export default function MainLayout({
     <SidebarProvider>
       <AppSidebar />
 
-      <div className='w-full flex flex-col grow'>
-        <SidebarTrigger />
-
-        {children}
-      </div>
+      <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   )
 }

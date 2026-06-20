@@ -1,3 +1,4 @@
+import { HeaderWithSidebar } from '@/components/header-with-sidebar'
 import { NotesListSkeleton } from '@/features/notes/components/dashboard/skeletons/notes-list-skeleton'
 import { DeletedNotesList } from '@/features/notes/components/trash/deleted-notes-list'
 import { auth } from '@/lib/auth'
@@ -32,23 +33,18 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col grow'>
-      <div className='flex items-center gap-4 justify-between'>
-        <div className='space-y-1'>
-          <h1 className='text-xl sm:text-2xl font-semibold'>Trash</h1>
-          <p className='text-sm sm:text-base text-muted-foreground'>
-            View and manage your deleted notes
-          </p>
-        </div>
-      </div>
+    <div className='flex flex-col grow'>
+      <HeaderWithSidebar title='Trash' />
 
-      <Suspense fallback={<NotesListSkeleton />}>
-        <DeletedNotesList
-          userId={userId}
-          query={query}
-          currentPage={currentPage}
-        />
-      </Suspense>
+      <main className='w-full max-w-7xl mx-auto px-4 flex flex-col grow'>
+        <Suspense fallback={<NotesListSkeleton />}>
+          <DeletedNotesList
+            userId={userId}
+            query={query}
+            currentPage={currentPage}
+          />
+        </Suspense>
+      </main>
     </div>
   )
 }

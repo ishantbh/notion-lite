@@ -2,7 +2,6 @@ import { db } from '@/db'
 import { notes } from '@/db/schema'
 import { EmptyNotesList } from '@/features/notes/components/dashboard/empty-notes-list'
 import { NotesPagination } from '@/features/notes/components/dashboard/notes-pagination'
-import { NotesSearch } from '@/features/notes/components/dashboard/notes-search'
 import { NOTES_PER_PAGE } from '@/lib/utils'
 import { and, count, desc, eq, ilike, or } from 'drizzle-orm'
 import { redirect } from 'next/navigation'
@@ -48,8 +47,6 @@ export async function NotesList({ userId, currentPage, query }: Props) {
 
   return (
     <div className='flex flex-col gap-8 grow mt-8'>
-      <NotesSearch count={total} />
-
       {userNotesWithTagIds.length ? (
         <ul className='grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3'>
           {userNotesWithTagIds.map((note) => (
@@ -60,11 +57,7 @@ export async function NotesList({ userId, currentPage, query }: Props) {
         <EmptyNotesList query={query} />
       )}
 
-      {totalPages > 0 && (
-        <div className='mt-auto'>
-          <NotesPagination totalPages={totalPages} />
-        </div>
-      )}
+      {totalPages > 0 && <NotesPagination totalPages={totalPages} />}
     </div>
   )
 }

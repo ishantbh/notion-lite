@@ -30,7 +30,7 @@ export function NotesPagination({ totalPages }: Props) {
   const allPages = generatePagination(currentPage, totalPages)
 
   return (
-    <Pagination>
+    <Pagination className='mt-auto mb-4'>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
