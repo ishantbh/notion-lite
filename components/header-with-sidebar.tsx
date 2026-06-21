@@ -20,7 +20,7 @@ export function HeaderWithSidebar({
 
         <Separator
           orientation='vertical'
-          className='mr-1 data-vertical:h-4 data-vertical:self-auto'
+          className='mr-1 data-vertical:h-6 data-vertical:self-auto'
         />
 
         <div className='flex items-center justify-between gap-8 w-full'>
