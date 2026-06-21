@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Note } from '@/db/types'
+import { RichTextEditor } from '@/features/notes/components/rich-text-editor'
 import {
   type CreateEditNoteSchema,
   createEditNoteSchema,
@@ -112,12 +113,7 @@ export function CreateEditNoteForm({ note }: Props) {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor='content'>Content</FieldLabel>
-              <Textarea
-                {...field}
-                id='content'
-                aria-invalid={fieldState.invalid}
-                disabled={isSubmitting}
-              />
+              <RichTextEditor />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
