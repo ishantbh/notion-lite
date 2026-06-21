@@ -4,10 +4,15 @@ import { NotesSearch } from '@/features/notes/components/dashboard/notes-search'
 
 type Props = {
   title: string
+  showSearch?: boolean
   children?: React.ReactNode
 }
 
-export function HeaderWithSidebar({ title, children }: Props) {
+export function HeaderWithSidebar({
+  title,
+  children,
+  showSearch = true,
+}: Props) {
   return (
     <header className='w-full border-b'>
       <div className='w-full max-w-7xl mx-auto flex h-16 shrink-0 items-center gap-2 px-4'>
@@ -22,7 +27,7 @@ export function HeaderWithSidebar({ title, children }: Props) {
           <h1 className='text-lg font-semibold'>{title}</h1>
 
           <div className='flex items-center gap-2'>
-            <NotesSearch />
+            {showSearch && <NotesSearch />}
 
             {children}
           </div>
