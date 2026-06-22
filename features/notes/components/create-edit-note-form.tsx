@@ -113,7 +113,7 @@ export function CreateEditNoteForm({ note }: Props) {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor='content'>Content</FieldLabel>
-              <RichTextEditor />
+              <RichTextEditor disabled={isSubmitting} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
