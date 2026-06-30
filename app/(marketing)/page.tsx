@@ -1,15 +1,11 @@
-import { Header } from '@/components/header'
-import { ThemeToggle } from '@/components/theme/theme-toggle'
+import { Header } from "@/components/header";
+import { HeroSection } from "@/components/landing-page/hero-section";
 
 export default function Page() {
   return (
-    <div className='w-full'>
+    <div className="flex flex-1 flex-col gap-6">
       <Header />
-
-      <div>
-        <h1 className='text-2xl font-bold'>Notion Lite</h1>
-        <ThemeToggle />
-      </div>
+      <HeroSection />
     </div>
-  )
+  );
 }
