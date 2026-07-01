@@ -44,7 +44,7 @@ const showcases = [
 
 export function ShowcaseSection() {
   return (
-    <section className="w-full border-b">
+    <section id='showcase' className="w-full border-b">
       <div className="mx-auto max-w-6xl px-6 py-20 lg:py-24">
         {/* Header */}
         <div className="mx-auto mb-20 max-w-2xl text-center">
