@@ -1,6 +1,7 @@
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/landing-page/hero-section";
 import { HowItWorks } from "@/components/landing-page/how-it-works";
+import { ValueSection } from "@/components/landing-page/value-section";
 
 export default function Page() {
   return (
@@ -8,6 +9,7 @@ export default function Page() {
       <Header />
       <HeroSection />
       <HowItWorks />
+      <ValueSection/>
     </div>
   );
 }
