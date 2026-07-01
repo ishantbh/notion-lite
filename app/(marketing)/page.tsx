@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { FinalCTA } from "@/components/landing-page/final-cta";
+import { Footer } from "@/components/landing-page/footer";
 import { HeroSection } from "@/components/landing-page/hero-section";
 import { HowItWorks } from "@/components/landing-page/how-it-works";
 import { ShowcaseSection } from "@/components/landing-page/showcase-section";
@@ -14,6 +15,7 @@ export default function Page() {
       <ValueSection/>
       <ShowcaseSection/>
       <FinalCTA/>
+      <Footer/>
     </div>
   );
 }
