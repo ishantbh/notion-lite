@@ -4,6 +4,7 @@ import { db } from '@/db'
 import { nextCookies } from 'better-auth/next-js'
 
 export const auth = betterAuth({
+  trustedOrigins: ['https://notion-lite-notes.vercel.app'],
   database: drizzleAdapter(db, {
     provider: 'pg',
   }),
