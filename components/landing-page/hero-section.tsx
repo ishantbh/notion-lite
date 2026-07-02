@@ -1,13 +1,15 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth/auth-client";
 import { CheckIcon } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-
 export function HeroSection() {
+  const { data: session } = authClient.useSession();
+
   return (
     <section className="w-full border-b">
       {/* Subtle glow */}
@@ -38,13 +40,21 @@ export function HeroSection() {
 
             {/* CTA */}
             <div className="flex flex-col justify-center gap-3 sm:flex-row sm:items-center md:justify-start">
-              <Button size="lg" asChild>
-                <Link href="/signup">Get Started</Link>
-              </Button>
+              {session ? (
+                <Button size="lg" asChild>
+                  <Link href="/dashboard">Go to Dashboard</Link>
+                </Button>
+              ) : (
+                <>
+                  <Button size="lg" asChild>
+                    <Link href="/signup">Get Started</Link>
+                  </Button>
 
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/login">Sign In</Link>
-              </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <Link href="/login">Sign In</Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             {/* Microcopy */}
