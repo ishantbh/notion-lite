@@ -1,3 +1,4 @@
+import { HeaderWithSidebar } from '@/components/header-with-sidebar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { MoveToTrashConfirmationDialog } from '@/features/notes/components/move-to-trash-confirmation-dialog'
@@ -36,72 +37,76 @@ export default async function Page({
   }
 
   return (
-    <div className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col'>
-      <div className='flex items-start gap-4 justify-between'>
-        <div className='space-y-1'>
-          <div className='flex items-center gap-2'>
-            <h1 className='text-xl sm:text-2xl font-semibold flex items-center gap-2'>
-              <span>{note.title}</span>
-              {note.isDeleted && <Badge variant='destructive'>Deleted</Badge>}
-            </h1>
+    <div className='flex flex-col grow'>
+      <HeaderWithSidebar title='Note Details' showSearch={false} />
 
-            <NotesItemStarButton
-              noteId={note.id}
-              isStarred={note.isStarred}
-              size='lg'
-            />
+      <main className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col'>
+        <div className='flex items-start gap-4 justify-between'>
+          <div className='space-y-1'>
+            <div className='flex items-center gap-2'>
+              <h1 className='text-xl sm:text-2xl font-semibold flex items-center gap-2'>
+                <span>{note.title}</span>
+                {note.isDeleted && <Badge variant='destructive'>Deleted</Badge>}
+              </h1>
+
+              <NotesItemStarButton
+                noteId={note.id}
+                isStarred={note.isStarred}
+                size='lg'
+              />
+            </div>
+            <p className='text-sm'>By {note.user.name}</p>
+            <p className='text-sm text-muted-foreground'>
+              Created:{' '}
+              <span className='font-semibold'>
+                {formatDate(note.updatedAt, 'dd MMM yyyy')}
+              </span>
+            </p>
+            <p className='text-sm text-muted-foreground'>
+              Last updated:{' '}
+              <span className='font-semibold'>
+                {formatDate(note.updatedAt, 'dd MMM yyyy')}
+              </span>
+            </p>
+            <div className='flex flex-wrap items-center gap-2 mt-2'>
+              {note.noteTags.map(({ tag }) => (
+                <Badge key={tag.id}>{tag.name}</Badge>
+              ))}
+            </div>
           </div>
-          <p className='text-sm'>By {note.user.name}</p>
-          <p className='text-sm text-muted-foreground'>
-            Created:{' '}
-            <span className='font-semibold'>
-              {formatDate(note.updatedAt, 'dd MMM yyyy')}
-            </span>
-          </p>
-          <p className='text-sm text-muted-foreground'>
-            Last updated:{' '}
-            <span className='font-semibold'>
-              {formatDate(note.updatedAt, 'dd MMM yyyy')}
-            </span>
-          </p>
-          <div className='flex flex-wrap items-center gap-2 mt-2'>
-            {note.noteTags.map(({ tag }) => (
-              <Badge key={tag.id}>{tag.name}</Badge>
-            ))}
-          </div>
+
+          {note.isDeleted ? (
+            <div className='flex items-center gap-2'>
+              <RestoreDeletedNoteConfirmationDialog noteId={note.id} />
+              <NoteDeleteConfirmationDialog noteId={note.id} />
+            </div>
+          ) : (
+            <div className='flex items-center gap-2'>
+              <Button
+                variant='outline'
+                title='Edit'
+                className='flex items-center gap-2'
+                asChild
+              >
+                <Link href={`/notes/${note.id}/edit`}>
+                  <PencilIcon />
+                  <span className='sr-only sm:not-sr-only'>Edit</span>
+                </Link>
+              </Button>
+
+              <MoveToTrashConfirmationDialog noteId={note.id} />
+            </div>
+          )}
         </div>
 
-        {note.isDeleted ? (
-          <div className='flex items-center gap-2'>
-            <RestoreDeletedNoteConfirmationDialog noteId={note.id} />
-            <NoteDeleteConfirmationDialog noteId={note.id} />
-          </div>
-        ) : (
-          <div className='flex items-center gap-2'>
-            <Button
-              variant='outline'
-              title='Edit'
-              className='flex items-center gap-2'
-              asChild
-            >
-              <Link href={`/notes/${note.id}/edit`}>
-                <PencilIcon />
-                <span className='sr-only sm:not-sr-only'>Edit</span>
-              </Link>
-            </Button>
-
-            <MoveToTrashConfirmationDialog noteId={note.id} />
-          </div>
-        )}
-      </div>
-
-      <div className='mt-6 text-lg'>
-        {note.content ? (
-          <p>{note.content}</p>
-        ) : (
-          <p className='italic text-muted-foreground'>No content</p>
-        )}
-      </div>
+        <div className='mt-6 text-lg'>
+          {note.content ? (
+            <p>{note.content}</p>
+          ) : (
+            <p className='italic text-muted-foreground'>No content</p>
+          )}
+        </div>
+      </main>
     </div>
   )
 }
