@@ -1,3 +1,4 @@
+import { HeaderWithSidebar } from '@/components/header-with-sidebar'
 import { CreateEditNoteForm } from '@/features/notes/components/create-edit-note-form'
 import { getNoteByIdWithUserNameAndTags } from '@/features/notes/data/get-note-by-id-with-user-name-and-tags'
 import { auth } from '@/lib/auth'
@@ -28,19 +29,23 @@ export default async function Page({
   }
 
   return (
-    <div className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col grow'>
-      <div className='flex items-center gap-4 justify-between'>
-        <div className='space-y-1'>
-          <h1 className='text-xl sm:text-2xl font-semibold'>Edit Note</h1>
-          <p className='text-sm sm:text-base text-muted-foreground'>
-            Edit your existing note
-          </p>
-        </div>
-      </div>
+    <div className='flex flex-col grow'>
+      <HeaderWithSidebar title='Edit Note' showSearch={false} />
 
-      <div className='mt-6'>
-        <CreateEditNoteForm note={note} />
-      </div>
+      <main className='w-full max-w-7xl mx-auto p-4 sm:p-6 lg:px-8 flex flex-col grow'>
+        <div className='flex items-center gap-4 justify-between'>
+          <div className='space-y-1'>
+            <h1 className='text-xl sm:text-2xl font-semibold'>Edit Note</h1>
+            <p className='text-sm sm:text-base text-muted-foreground'>
+              Edit your existing note
+            </p>
+          </div>
+        </div>
+
+        <div className='mt-6'>
+          <CreateEditNoteForm note={note} />
+        </div>
+      </main>
     </div>
   )
 }
