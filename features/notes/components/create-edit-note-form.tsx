@@ -23,6 +23,7 @@ import { Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import TiptapEditor from './tiptap/tiptap-editor'
 
 type Props = {
   note?: Note & { noteTags: { tagId: string }[] }
@@ -122,6 +123,8 @@ export function CreateEditNoteForm({ note }: Props) {
             </Field>
           )}
         />
+
+        <TiptapEditor />
 
         <Field orientation='horizontal'>
           <Button type='button' variant='outline' onClick={() => form.reset()}>
