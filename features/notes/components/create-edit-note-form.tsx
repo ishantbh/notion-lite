@@ -107,7 +107,7 @@ export function CreateEditNoteForm({ note }: Props) {
           )}
         />
 
-        <Controller
+        {/* <Controller
           name='content'
           control={form.control}
           render={({ field, fieldState }) => (
@@ -122,9 +122,23 @@ export function CreateEditNoteForm({ note }: Props) {
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
-        />
+        /> */}
 
-        <TiptapEditor />
+        <Controller
+          name='content'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor='content'>Content</FieldLabel>
+              <TiptapEditor
+                value={field.value}
+                onChange={field.onChange}
+                disabled={isSubmitting}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
 
         <Field orientation='horizontal'>
           <Button type='button' variant='outline' onClick={() => form.reset()}>
