@@ -18,7 +18,10 @@ export async function StarredNotesList({ userId, currentPage, query }: Props) {
     eq(notes.userId, userId),
     eq(notes.isStarred, true),
     query?.trim()
-      ? or(ilike(notes.title, `%${query}%`), ilike(notes.content, `%${query}%`))
+      ? or(
+          ilike(notes.title, `%${query}%`),
+          ilike(notes.contentText, `%${query}%`),
+        )
       : undefined,
   )
 

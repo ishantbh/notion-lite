@@ -18,7 +18,10 @@ export async function NotesList({ userId, currentPage, query }: Props) {
     eq(notes.userId, userId),
     eq(notes.isDeleted, false),
     query?.trim()
-      ? or(ilike(notes.title, `%${query}%`), ilike(notes.content, `%${query}%`))
+      ? or(
+          ilike(notes.title, `%${query}%`),
+          ilike(notes.contentText, `%${query}%`),
+        )
       : undefined,
   )
 

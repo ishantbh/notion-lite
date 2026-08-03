@@ -29,7 +29,10 @@ export async function NotesListByTag({
         .where(and(eq(noteTags.noteId, notes.id), eq(noteTags.tagId, tagId))),
     ),
     query?.trim()
-      ? or(ilike(notes.title, `%${query}%`), ilike(notes.content, `%${query}%`))
+      ? or(
+          ilike(notes.title, `%${query}%`),
+          ilike(notes.contentText, `%${query}%`),
+        )
       : undefined,
   )
 
