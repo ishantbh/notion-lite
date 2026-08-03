@@ -5,15 +5,17 @@ import StarterKit from '@tiptap/starter-kit'
 
 import { Skeleton } from '@/components/ui/skeleton'
 
+type TiptapEditorProps = {
+  value?: any
+  onChange: (value: any) => void
+  disabled?: boolean
+}
+
 export default function TiptapEditor({
   value,
   onChange,
   disabled = false,
-}: {
-  value?: string
-  onChange: (value: string) => void
-  disabled?: boolean
-}) {
+}: TiptapEditorProps) {
   const editor = useEditor({
     extensions: [StarterKit],
     content: value ?? '',
@@ -21,7 +23,7 @@ export default function TiptapEditor({
     immediatelyRender: false,
     editable: !disabled,
     onUpdate: ({ editor }) => {
-      onChange(editor.getText())
+      onChange(editor.getJSON())
     },
   })
 
