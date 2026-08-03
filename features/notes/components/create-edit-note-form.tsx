@@ -23,6 +23,7 @@ import { Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import TiptapEditor from './tiptap/tiptap-editor'
 
 type Props = {
   note?: Note & { noteTags: { tagId: string }[] }
@@ -106,7 +107,7 @@ export function CreateEditNoteForm({ note }: Props) {
           )}
         />
 
-        <Controller
+        {/* <Controller
           name='content'
           control={form.control}
           render={({ field, fieldState }) => (
@@ -116,6 +117,22 @@ export function CreateEditNoteForm({ note }: Props) {
                 {...field}
                 id='content'
                 aria-invalid={fieldState.invalid}
+                disabled={isSubmitting}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        /> */}
+
+        <Controller
+          name='content'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor='content'>Content</FieldLabel>
+              <TiptapEditor
+                value={field.value}
+                onChange={field.onChange}
                 disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

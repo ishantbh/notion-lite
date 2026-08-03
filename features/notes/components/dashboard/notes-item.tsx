@@ -45,7 +45,7 @@ export function NotesItem({ note }: Props) {
           </CardAction>
         </CardHeader>
         <CardContent className='text-muted-foreground line-clamp-2'>
-          {note.content || (
+          {note.contentText || (
             <span className='opacity-80 italic'>No content</span>
           )}
         </CardContent>

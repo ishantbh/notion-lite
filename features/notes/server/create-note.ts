@@ -7,7 +7,9 @@ import {
   type CreateEditNoteSchema,
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { auth } from '@/lib/auth'
+import { generateText } from '@tiptap/core'
 import { headers } from 'next/headers'
+import { extensions } from '../utils'
 
 export async function createNote(data: CreateEditNoteSchema) {
   const session = await auth.api.getSession({
@@ -28,9 +30,11 @@ export async function createNote(data: CreateEditNoteSchema) {
 
   const { title, content, tags } = parsed.data
 
+  const contentText = generateText(content, extensions)
+
   const [insertedNote] = await db
     .insert(notes)
-    .values({ userId, title, content })
+    .values({ userId, title, content, contentText })
     .returning({
       id: notes.id,
     })

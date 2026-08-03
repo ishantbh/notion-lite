@@ -7,8 +7,10 @@ import {
   type CreateEditNoteSchema,
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { auth } from '@/lib/auth'
+import { generateText } from '@tiptap/core'
 import { and, eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
+import { extensions } from '../utils'
 
 export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
   const session = await auth.api.getSession({
@@ -29,10 +31,12 @@ export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
 
   const { title, content, tags } = parsed.data
 
+  const contentText = generateText(content, extensions)
+
   await Promise.all([
     db
       .update(notes)
-      .set({ title, content })
+      .set({ title, content, contentText })
       .where(and(eq(notes.id, noteId), eq(notes.userId, userId)))
       .returning({
         id: notes.id,

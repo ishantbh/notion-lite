@@ -4,6 +4,7 @@ import { relations } from 'drizzle-orm'
 import {
   boolean,
   index,
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -19,7 +20,8 @@ export const notes = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     title: varchar({ length: 255 }).notNull(),
-    content: text('content'),
+    content: jsonb('content'),
+    contentText: text('content_text'),
     isDeleted: boolean('is_deleted').default(false),
     isStarred: boolean('is_starred').notNull().default(false),
     createdAt: timestamp('created_at').defaultNow().notNull(),
