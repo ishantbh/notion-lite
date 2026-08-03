@@ -1,8 +1,8 @@
 'use client'
 
 import { EditorContent, useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
 
+import { extensions } from '../../utils'
 import { Skeleton } from '@/components/ui/skeleton'
 
 type TiptapEditorProps = {
@@ -17,7 +17,7 @@ export default function TiptapEditor({
   disabled = false,
 }: TiptapEditorProps) {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions,
     content: value ?? '',
     // Don't render immediately on the server to avoid SSR issues
     immediatelyRender: false,
