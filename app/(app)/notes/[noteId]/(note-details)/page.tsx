@@ -6,7 +6,9 @@ import { NoteDeleteConfirmationDialog } from '@/features/notes/components/note-d
 import { NotesItemStarButton } from '@/features/notes/components/notes-item-star-button'
 import { RestoreDeletedNoteConfirmationDialog } from '@/features/notes/components/restore-deleted-note-confirmation-dialog'
 import { getNoteByIdWithUserNameAndTags } from '@/features/notes/data/get-note-by-id-with-user-name-and-tags'
+import { extensions } from '@/features/notes/utils'
 import { auth } from '@/lib/auth'
+import { renderToReactElement } from '@tiptap/static-renderer'
 import { formatDate } from 'date-fns'
 import { PencilIcon } from 'lucide-react'
 import { headers } from 'next/headers'
@@ -100,8 +102,12 @@ export default async function Page({
         </div>
 
         <div className='mt-6 text-lg'>
-          {note.contentText ? (
-            <p>{note.contentText}</p>
+          {note.content ? (
+            // <p>{note.contentText}</p>
+            renderToReactElement({
+              content: note.content,
+              extensions: extensions,
+            })
           ) : (
             <p className='italic text-muted-foreground'>No content</p>
           )}
