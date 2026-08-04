@@ -4,6 +4,7 @@ import { EditorContent, useEditor } from '@tiptap/react'
 
 import { extensions } from '../../utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { MenuBar } from './menu-bar'
 
 type TiptapEditorProps = {
   value?: any
@@ -29,5 +30,10 @@ export default function TiptapEditor({
 
   if (!editor) return <Skeleton className='w-full h-16' />
 
-  return <EditorContent editor={editor} />
+  return (
+    <>
+      <MenuBar editor={editor} />
+      <EditorContent editor={editor} />
+    </>
+  )
 }
