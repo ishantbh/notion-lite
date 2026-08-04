@@ -101,7 +101,7 @@ export default async function Page({
           )}
         </div>
 
-        <div className='mt-6 text-lg'>
+        <div className='mt-6 text-lg prose dark:prose-invert'>
           {note.content ? (
             // <p>{note.contentText}</p>
             renderToReactElement({
