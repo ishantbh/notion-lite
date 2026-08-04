@@ -7,10 +7,8 @@ import {
   type CreateEditNoteSchema,
 } from '@/features/notes/schemas/create-edit-note-schema'
 import { auth } from '@/lib/auth'
-import { generateText } from '@tiptap/core'
 import { and, eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
-import { extensions } from '../utils'
 
 export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
   const session = await auth.api.getSession({
@@ -29,9 +27,7 @@ export async function updateNote(noteId: string, data: CreateEditNoteSchema) {
     return { error: 'Invalid inputs' }
   }
 
-  const { title, content, tags } = parsed.data
-
-  const contentText = generateText(content, extensions)
+  const { title, content, contentText, tags } = parsed.data
 
   await Promise.all([
     db

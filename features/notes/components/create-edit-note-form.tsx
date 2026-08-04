@@ -8,7 +8,6 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Note } from '@/db/types'
 import {
   type CreateEditNoteSchema,
@@ -19,10 +18,12 @@ import { updateNote } from '@/features/notes/server/update-note'
 import { TagPicker } from '@/features/tags/components/tag-picker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
+import { generateText } from '@tiptap/core'
 import { Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { extensions } from '../utils'
 import TiptapEditor from './tiptap/tiptap-editor'
 
 type Props = {
@@ -35,6 +36,7 @@ export function CreateEditNoteForm({ note }: Props) {
     defaultValues: {
       title: note?.title ?? '',
       content: note?.content ?? undefined,
+      contentText: note?.contentText ?? '',
       tags: note?.noteTags.map((tag) => tag.tagId) ?? [],
     },
   })
@@ -46,9 +48,11 @@ export function CreateEditNoteForm({ note }: Props) {
   const { isSubmitting } = form.formState
 
   async function onSubmit(data: CreateEditNoteSchema) {
+    const contentText = generateText(data.content, extensions)
+
     if (note) {
       // Update note
-      const res = await updateNote(note.id, data)
+      const res = await updateNote(note.id, { ...data, contentText })
 
       if (res?.error) {
         toast.error(res.error)
@@ -60,7 +64,7 @@ export function CreateEditNoteForm({ note }: Props) {
       router.replace(`/notes/${res.noteId}`)
     } else {
       // Create new note
-      const res = await createNote(data)
+      const res = await createNote({ ...data, contentText })
 
       if (res?.error) {
         toast.error(res.error)
