@@ -1,10 +1,8 @@
 import { HeaderWithSidebar } from '@/components/header-with-sidebar'
-import { db } from '@/db'
-import { tags } from '@/db/schema'
 import { NotesListSkeleton } from '@/features/notes/components/dashboard/skeletons/notes-list-skeleton'
 import { NotesListByTag } from '@/features/notes/components/notes-list-by-tag'
+import { getUserTagById } from '@/features/tags/data/get-user-tag-by-id'
 import { auth } from '@/lib/auth'
-import { and, eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import { Suspense } from 'react'
@@ -30,9 +28,7 @@ export default async function Page(props: Props) {
 
   const { tagId } = await props.params
 
-  const tag = await db.query.tags.findFirst({
-    where: and(eq(tags.id, tagId), eq(tags.userId, userId)),
-  })
+  const tag = await getUserTagById({ tagId, userId })
 
   if (!tag) {
     notFound()
