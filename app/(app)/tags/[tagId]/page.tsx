@@ -3,6 +3,7 @@ import { NotesListSkeleton } from '@/features/notes/components/dashboard/skeleto
 import { NotesListByTag } from '@/features/notes/components/notes-list-by-tag'
 import { getUserTagById } from '@/features/tags/data/get-user-tag-by-id'
 import { auth } from '@/lib/auth'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import { Suspense } from 'react'
@@ -13,6 +14,26 @@ type Props = {
     query?: string
     page?: string
   }>
+}
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+
+  if (!session) {
+    return redirect('/login')
+  }
+
+  const { id: userId } = session.user
+
+  const { tagId } = await props.params
+
+  const tag = await getUserTagById({ tagId, userId })
+
+  return {
+    title: tag?.name ?? 'Tag not found',
+  }
 }
 
 export default async function Page(props: Props) {
