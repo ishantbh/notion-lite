@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Notion Lite',
+  title: {
+    template: '%s | Notion Lite',
+    default: 'Notion Lite',
+  },
   description: 'A simple, lightweight, and fast Notion-like note-taking app.',
 }
 
