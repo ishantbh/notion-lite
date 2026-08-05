@@ -7,9 +7,14 @@ import {
 } from '@/components/ui/card'
 import { SignUpForm } from '@/features/auth/components/sign-up-form'
 import { auth } from '@/lib/auth'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Sign Up',
+}
 
 export default async function Page() {
   const session = await auth.api.getSession({
