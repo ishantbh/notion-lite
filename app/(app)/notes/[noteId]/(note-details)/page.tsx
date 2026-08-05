@@ -11,15 +11,36 @@ import { auth } from '@/lib/auth'
 import { renderToReactElement } from '@tiptap/static-renderer'
 import { formatDate } from 'date-fns'
 import { PencilIcon } from 'lucide-react'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
-export default async function Page({
-  params,
-}: {
+type Props = {
   params: Promise<{ noteId: string }>
-}) {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  const { id: userId } = session.user
+
+  const { noteId } = await params
+
+  const note = await getNoteByIdWithUserNameAndTags({ noteId, userId })
+
+  return {
+    title: note?.title ?? 'Note not found',
+  }
+}
+
+export default async function Page({ params }: Props) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
