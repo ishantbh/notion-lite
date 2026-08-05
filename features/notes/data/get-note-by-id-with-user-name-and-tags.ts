@@ -1,8 +1,9 @@
 import { db } from '@/db'
 import { notes } from '@/db/schema'
 import { and, eq } from 'drizzle-orm'
+import { cache } from 'react'
 
-export async function getNoteByIdWithUserNameAndTags({
+export const getNoteByIdWithUserNameAndTags = cache(async function ({
   noteId,
   userId,
 }: {
@@ -24,4 +25,4 @@ export async function getNoteByIdWithUserNameAndTags({
       },
     },
   })
-}
+})
