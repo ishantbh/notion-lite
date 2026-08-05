@@ -2,8 +2,13 @@ import { HeaderWithSidebar } from '@/components/header-with-sidebar'
 import { CreateEditNoteForm } from '@/features/notes/components/create-edit-note-form'
 import { getNoteByIdWithUserNameAndTags } from '@/features/notes/data/get-note-by-id-with-user-name-and-tags'
 import { auth } from '@/lib/auth'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Edit note',
+}
 
 export default async function Page({
   params,
