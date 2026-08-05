@@ -2,9 +2,14 @@ import { HeaderWithSidebar } from '@/components/header-with-sidebar'
 import { NotesListSkeleton } from '@/features/notes/components/dashboard/skeletons/notes-list-skeleton'
 import { StarredNotesList } from '@/features/notes/components/starred-notes-list'
 import { auth } from '@/lib/auth'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
+
+export const metadata: Metadata = {
+  title: 'Starred',
+}
 
 type Props = {
   searchParams?: Promise<{

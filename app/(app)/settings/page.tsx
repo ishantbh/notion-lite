@@ -2,8 +2,13 @@ import { HeaderWithSidebar } from '@/components/header-with-sidebar'
 import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { Separator } from '@/components/ui/separator'
 import { auth } from '@/lib/auth'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Settings',
+}
 
 export default async function Page() {
   const session = await auth.api.getSession({
