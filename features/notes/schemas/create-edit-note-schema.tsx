@@ -2,7 +2,7 @@ import z from 'zod'
 
 export const createEditNoteSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  content: z.any(),
+  content: z.any().optional(),
   contentText: z.string().optional(),
   tags: z.array(z.string()),
 })

@@ -48,7 +48,9 @@ export function CreateEditNoteForm({ note }: Props) {
   const { isSubmitting } = form.formState
 
   async function onSubmit(data: CreateEditNoteSchema) {
-    const contentText = generateText(data.content, extensions)
+    const contentText = data.content
+      ? generateText(data.content, extensions)
+      : undefined
 
     if (note) {
       // Update note
