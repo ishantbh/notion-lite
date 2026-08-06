@@ -1,7 +1,16 @@
 # Notion Lite - Full-Stack Modern Notes Management System
 
-A production-inspired full-stack notes application built with the modern Next.js ecosystem.
-It demonstrates authentication, relational data modeling, optimistic UI, caching strategies, and scalable React architecture.
+A production-inspired full-stack note-taking application built with the modern Next.js ecosystem.
+It demonstrates authentication, relational data modeling, rich-text editing, optimistic UI, caching strategies, SEO best practices, and scalable React architecture.
+
+## Highlights
+
+- Better Auth with email/password, GitHub OAuth, and secure demo account login
+- Rich text note editing powered by Tiptap with a custom formatting toolbar
+- Dynamic SEO using Next.js `generateMetadata()` with cached server-side data fetching
+- Optimistic UI, TanStack Query caching, and debounced search for a responsive experience
+- Many-to-many tag system with URL-synced search and pagination
+- Light, dark, and system themes built with shadcn/ui
 
 ---
 
