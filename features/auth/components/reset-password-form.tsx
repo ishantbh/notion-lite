@@ -17,12 +17,17 @@ import {
   resetPasswordSchema,
   type ResetPasswordSchema,
 } from '../schemas/reset-password-schema'
+import { authClient } from '@/lib/auth/auth-client'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   token: string
 }
 
 export function ResetPasswordForm({ token }: Props) {
+  const router = useRouter()
+
   const form = useForm<ResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -34,7 +39,21 @@ export function ResetPasswordForm({ token }: Props) {
   const { isSubmitting } = form.formState
 
   async function onSubmit(values: ResetPasswordSchema) {
-    console.log('Submitted:', values)
+    await authClient.resetPassword(
+      {
+        newPassword: values.password,
+        token,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Password reset successfully')
+          router.push('/login')
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message)
+        },
+      },
+    )
   }
 
   return (
