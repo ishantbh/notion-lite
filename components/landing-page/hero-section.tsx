@@ -47,7 +47,7 @@ export function HeroSection() {
               ) : (
                 <>
                   <Button size="lg" asChild>
-                    <Link href="/signup">Get Started</Link>
+                    <Link href="/sign-up">Get Started</Link>
                   </Button>
 
                   <Button variant="outline" size="lg" asChild>

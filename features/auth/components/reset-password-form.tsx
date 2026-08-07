@@ -9,43 +9,45 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import {
-  loginSchema,
-  type LoginSchema,
-} from '@/features/auth/schemas/auth-schema'
-import { authClient } from '@/lib/auth/auth-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
+import {
+  resetPasswordSchema,
+  type ResetPasswordSchema,
+} from '../schemas/reset-password-schema'
+import { authClient } from '@/lib/auth/auth-client'
 import { toast } from 'sonner'
-import { DemoSignIn } from './demo-sign-in'
-import { SignInWithGitHub } from './sign-in-with-github'
+import { useRouter } from 'next/navigation'
 
-export function LoginForm() {
+type Props = {
+  token: string
+}
+
+export function ResetPasswordForm({ token }: Props) {
   const router = useRouter()
 
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<ResetPasswordSchema>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      email: '',
       password: '',
+      confirmPassword: '',
     },
   })
 
   const { isSubmitting } = form.formState
 
-  async function onSubmit(values: LoginSchema) {
-    await authClient.signIn.email(
+  async function onSubmit(values: ResetPasswordSchema) {
+    await authClient.resetPassword(
       {
-        ...values,
-        callbackURL: '/dashboard',
+        newPassword: values.password,
+        token,
       },
       {
         onSuccess: () => {
-          toast.success('Login successful')
-          router.push('/dashboard')
+          toast.success('Password reset successfully')
+          router.push('/login')
         },
         onError: (ctx) => {
           toast.error(ctx.error.message)
@@ -58,42 +60,11 @@ export function LoginForm() {
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <Controller
-          name='email'
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor='email'>Email</FieldLabel>
-              <Input
-                {...field}
-                id='email'
-                type='email'
-                aria-invalid={fieldState.invalid}
-                placeholder='m@example.com'
-                disabled={isSubmitting}
-                required
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Controller
           name='password'
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <div className='flex items-center gap-2 justify-between'>
-                <FieldLabel htmlFor='password'>Password</FieldLabel>
-
-                <Button
-                  variant='link'
-                  size='sm'
-                  asChild
-                  className='text-muted-foreground'
-                >
-                  <Link href='/forgot-password'>Forgot Password?</Link>
-                </Button>
-              </div>
+              <FieldLabel htmlFor='password'>Password</FieldLabel>
               <Input
                 {...field}
                 id='password'
@@ -107,20 +78,35 @@ export function LoginForm() {
           )}
         />
 
+        <Controller
+          name='confirmPassword'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor='confirm-password'>
+                Confirm Password
+              </FieldLabel>
+              <Input
+                {...field}
+                id='confirm-password'
+                type='password'
+                aria-invalid={fieldState.invalid}
+                disabled={isSubmitting}
+                required
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
         <Field>
-          <Field orientation='horizontal' className='justify-center'>
-            <Button type='submit' disabled={isSubmitting} className='grow'>
-              {isSubmitting && <Loader2Icon className='size-4 animate-spin' />}
-              <span>Login</span>
-            </Button>
-
-            <DemoSignIn />
-          </Field>
-
-          <SignInWithGitHub />
+          <Button type='submit' disabled={isSubmitting}>
+            {isSubmitting && <Loader2Icon className='size-4 animate-spin' />}
+            <span>Reset Password</span>
+          </Button>
 
           <FieldDescription className='text-center'>
-            Don&apos;t have an account? <Link href='/sign-up'>Sign up</Link>
+            Go back to <Link href='/login'>Login</Link>
           </FieldDescription>
         </Field>
       </FieldGroup>
