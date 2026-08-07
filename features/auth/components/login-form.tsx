@@ -82,7 +82,18 @@ export function LoginForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor='password'>Password</FieldLabel>
+              <div className='flex items-center gap-2 justify-between'>
+                <FieldLabel htmlFor='password'>Password</FieldLabel>
+
+                <Button
+                  variant='link'
+                  size='sm'
+                  asChild
+                  className='text-muted-foreground'
+                >
+                  <Link href='/forgot-password'>Forgot Password?</Link>
+                </Button>
+              </div>
               <Input
                 {...field}
                 id='password'
