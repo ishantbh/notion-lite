@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -10,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
+import Link from 'next/link'
 import { Controller, useForm } from 'react-hook-form'
 import z from 'zod'
 
@@ -59,6 +61,10 @@ export function ForgotPasswordForm() {
             {isSubmitting && <Loader2Icon className='size-4 animate-spin' />}
             <span>Reset Password</span>
           </Button>
+
+          <FieldDescription className='text-center'>
+            Go back to <Link href='/login'>Login</Link>
+          </FieldDescription>
         </Field>
       </FieldGroup>
     </form>
