@@ -1,6 +1,7 @@
-import { betterAuth } from 'better-auth/minimal'
-import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from '@/db'
+import { sendResetEmail } from '@/lib/mail'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { betterAuth } from 'better-auth/minimal'
 import { nextCookies } from 'better-auth/next-js'
 
 export const auth = betterAuth({
@@ -10,6 +11,13 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    sendResetPassword: async ({ user, url }) => {
+      await sendResetEmail({
+        to: user.email,
+        resetUrl: url,
+        userName: user.name,
+      })
+    },
   },
   socialProviders: {
     github: {
