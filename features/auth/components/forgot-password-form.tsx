@@ -9,10 +9,12 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { authClient } from '@/lib/auth/auth-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import Link from 'next/link'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import z from 'zod'
 
 const forgotPasswordFormSchema = z.object({
@@ -30,7 +32,20 @@ export function ForgotPasswordForm() {
   const { isSubmitting } = form.formState
 
   async function onSubmit(values: z.infer<typeof forgotPasswordFormSchema>) {
-    console.log('Submitted:', values)
+    await authClient.requestPasswordReset(
+      {
+        email: values.email,
+        redirectTo: '/reset-password',
+      },
+      {
+        onSuccess: () => {
+          toast.success('Password reset email sent successfully')
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message)
+        },
+      },
+    )
   }
 
   return (
