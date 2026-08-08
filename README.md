@@ -6,6 +6,7 @@ It demonstrates authentication, relational data modeling, rich-text editing, opt
 ## Highlights
 
 - Better Auth with email/password, GitHub OAuth, and secure demo account login
+- Password recovery flow with email-based reset links powered by Resend
 - Rich text note editing powered by Tiptap with a custom formatting toolbar
 - Dynamic SEO using Next.js `generateMetadata()` with cached server-side data fetching
 - Optimistic UI, TanStack Query caching, and debounced search for a responsive experience
@@ -29,6 +30,7 @@ It demonstrates authentication, relational data modeling, rich-text editing, opt
   - [Keyboard Shortcut Handling](#keyboard-shortcut-handling)
   - [Dynamic SEO Metadata](#dynamic-seo-metadata)
   - [Demo User Authentication](#demo-user-authentication)
+  - [Password Reset Flow](#password-reset-flow)
   - [Shared Server Data Fetching](#shared-server-data-fetching)
   - [Form System](#form-system)
 - [What This Project Demonstrates](#what-this-project-demonstrates)
@@ -70,6 +72,7 @@ It demonstrates authentication, relational data modeling, rich-text editing, opt
 - Better Auth session management with cookie caching
 - Email/password authentication
 - GitHub social login
+- Forgot password flow with email-based password reset
 - One-click demo user login
 - Protected routes and session handling
 - Clean login / signup flow with error states and toasts notifications
@@ -182,6 +185,10 @@ Supported formatting includes:
 - **React Hook Form**
 - **Zod**
 
+### Email
+
+- **Resend**
+
 ### UX Enhancements
 
 - **Sonner (toasts)**
@@ -263,6 +270,18 @@ Notes are never immediately destroyed:
 
 ---
 
+### Password Reset Flow
+
+Users can recover their account through an email-based password reset flow:
+
+1. The user navigates to the **Forgot Password** page and submits their email address.
+2. A password reset email is sent using **Resend**.
+3. The email contains a reset link that takes the user to the **Reset Password** page with a reset token.
+4. The user enters and confirms their new password.
+5. The backend verifies the reset token and updates the user's password.
+
+---
+
 ### Shared Server Data Fetching
 
 - Both page rendering and generateMetadata() require the same note or tag data.
@@ -297,6 +316,8 @@ It demonstrates:
 - Multiple authentication strategies (email/password, GitHub OAuth, demo account)
 - Secure server-side handling of demo account credentials
 - Resolving integration issues between third-party libraries (for example, keyboard shortcut conflicts between shadcn sidebar and tiptap editor)
+- Secure password recovery flows
+- Transactional email integration with Resend
 
 ---
 
@@ -311,9 +332,23 @@ bun install
 ### Environment Variables
 
 ```env
+# Database
 DATABASE_URL=
+
+# Better Auth
 BETTER_AUTH_URL=
 BETTER_AUTH_SECRET=
+
+# Demo User
+DEMO_USER_EMAIL=
+DEMO_USER_PASSWORD=
+
+# GitHub OAuth
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+# Email
+RESEND_API_KEY=
 ```
 
 ### Run Development Server
