@@ -1,8 +1,9 @@
 import { db } from '@/db'
 import { noteTags, tags } from '@/db/schema'
 import { count, eq } from 'drizzle-orm'
+import { cache } from 'react'
 
-export async function getTagsWithCounts(userId: string) {
+export const getTagsWithCounts = cache(async function (userId: string) {
   return db
     .select({
       id: tags.id,
@@ -14,4 +15,4 @@ export async function getTagsWithCounts(userId: string) {
     .where(eq(tags.userId, userId))
     .groupBy(tags.id, tags.name)
     .orderBy(tags.name)
-}
+})
